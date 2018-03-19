@@ -31,11 +31,11 @@ class MachineAction
     }
 
     /**
-     * 进入状态机
+     * 进入状态
      */
     public enter()
     {
-        console.log(`当前进入状态机[${this._name}]`);
+        console.log(`当前进入状态[${this._name}]`);
         this._stateMachine.setAction(this);
 
         if (this.funcOnEnter)
@@ -45,7 +45,7 @@ class MachineAction
     }
 
     /**
-     * 退出状态机
+     * 退出状态
      */
     public exit()
     {
