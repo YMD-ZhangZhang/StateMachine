@@ -8,12 +8,13 @@ interface IStateMachineTarget
     onJump();
     onFightIdle();
     onFightRun();
-    attack1();
-    attack2();
-    attack3();
-    skill1();
-    skill2();
-    skill3();
-    skill4();
-    skills();
+    onInjure(param: any);
+    onDie();
+    onAttack1();
+    onAttack2();
+    onAttack3();
+    onSkill1();
+    onSkill2();
+    onSkill3();
+    onSkill4();
 }

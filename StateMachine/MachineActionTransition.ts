@@ -9,9 +9,12 @@ class MachineActionTransition
     public _type: string;
 
     public _delayTime: number;
+    public _paused: boolean = false;
+    private _nowDelayTime: number;
     
     public _triggerFlag: string;
     public _triggerProtectTime: number = 0;// 触发器的保护期（在保护期内触发器无效）
+    public _triggerEndTime: number = 0;// 
     public _triggerProtecting: boolean;// 触发保护生效中
 
     private _fromAction: MachineAction;
@@ -27,7 +30,9 @@ class MachineActionTransition
     {
         if (this._type == MachineActionTransition.TYPE_DELAY)
         {
-            Laya.timer.once(this._delayTime, this, this.onDelayOver);
+            //Laya.timer.once(this._delayTime, this, this.onDelayOver);
+            this._nowDelayTime = 0;
+            Laya.timer.frameLoop(1, this, this.onUpdate);
         }
 
         if (this._type == MachineActionTransition.TYPE_TRIGGER)
@@ -36,6 +41,11 @@ class MachineActionTransition
             {
                 this._triggerProtecting = true;
                 Laya.timer.once(this._triggerProtectTime, this, this.onTriggerProtectTimeOver)
+
+                if (this._triggerEndTime > 0)
+                {
+                    Laya.timer.once(this._triggerEndTime, this, this.onTriggerEndTimerOver)
+                }
             }
             else
             {
@@ -44,41 +54,61 @@ class MachineActionTransition
         }
     }
 
-    public onTrigger(triggerFlag: string)
+    private onUpdate()
+    {
+        if (this._paused)
+            return;
+            
+        this._nowDelayTime += Laya.timer.delta;
+        if (this._nowDelayTime >= this._delayTime)
+        {
+            this.onDelayOver();
+        }
+    }
+
+    public onTrigger(triggerFlag: string, param: any)
     {
         if (this._type == MachineActionTransition.TYPE_TRIGGER)
         {
             if (this._triggerProtecting)
             {
-                console.log("[" + this._fromAction.getName() + "]的转换正在保护期中");
+                // console.log("[" + this._fromAction.getName() + "]的转换正在保护期中");
             }
 
             if (this._triggerFlag == triggerFlag && !this._triggerProtecting)
             {
-                 this.toNext();
+                 this.toNext(param);
             }
         }
     }
 
     public onDisable()
     {
-        Laya.timer.clear(this, this.onDelayOver);
+        Laya.timer.clear(this, this.onUpdate);
+        //Laya.timer.clear(this, this.onDelayOver);
         Laya.timer.clear(this, this.onTriggerProtectTimeOver);
     }
 
     private onDelayOver()
     {
-        this.toNext();
+        this.toNext(null);
     }
 
     private onTriggerProtectTimeOver()
     {
         this._triggerProtecting = false;
+        // console.log("可连击", PlayerUtil.getTimestamp());
     }
 
-    private toNext()
+    private onTriggerEndTimerOver()
+    {
+        this._triggerProtecting = true;
+        // console.log("可连击结束", PlayerUtil.getTimestamp());
+    }
+
+    private toNext(param: any)
     {
         this._fromAction.exit();
-        this._toAction.enter();
+        this._toAction.enter(param);
     }
 }

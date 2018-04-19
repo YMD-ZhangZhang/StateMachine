@@ -12,6 +12,11 @@ class StateMachine
         this._target = target;
     }
 
+    public getTarget() : IStateMachineTarget
+    {
+        return this._target;
+    }
+
     public createAction(name: string) : MachineAction
     {
         let action = new MachineAction(name, this);
@@ -22,6 +27,34 @@ class StateMachine
     public setAction(nowAction: MachineAction)
     {
         this._nowAction = nowAction;
+    }
+
+    public getAction() : MachineAction
+    {
+        return this._nowAction;
+    }
+
+    public canMove() : boolean
+    {
+        switch (this._nowAction.getName())
+        {
+            case "idle":
+            case "run":
+            case "fightidle":
+            case "fightrun":
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 设置暂停
+     * @param paused 是否暂停
+     */
+    public setPaused(paused: boolean)
+    {
+        this._nowAction.setPaused(paused);
     }
 
     /**
@@ -41,10 +74,27 @@ class StateMachine
     }
 
     /**
+     * 进入受击
+     */
+    public enterInjure(param: any)
+    {
+        this._nowAction.trigger("injure", param);
+    }
+
+    /**
+     * 进入死亡
+     */
+    public enterDie()
+    {
+        this._nowAction.trigger("die");
+    }
+
+    /**
      * 进入跳跃
      */
     public enterJump()
     {
+        this.enterFight();
         this._nowAction.trigger("jump");
     }
 
@@ -59,15 +109,18 @@ class StateMachine
 
     /**
      * 进入技能
-     * @param skill 1 2 3 4 s : string
+     * @param skill skill1 skill2 skill3 skill4
      */
     public enterSkill(skill: string)
     {
         this.enterFight();
-        this._nowAction.trigger(`skill${skill}`);
+        this._nowAction.trigger(skill);
     }
 
-    private enterFight()
+    /**
+     * 进入战斗
+     */
+    public enterFight()
     {
         this._nowAction.trigger("enterfight");
         Laya.timer.clear(this, this.exitFight)

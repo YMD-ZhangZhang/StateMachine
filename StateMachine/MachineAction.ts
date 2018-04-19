@@ -33,13 +33,14 @@ class MachineAction
     /**
      * 进入状态
      */
-    public enter()
+    public enter(param: any)
     {
-        console.log(`当前进入状态[${this._name}]`);
+        // if (this._stateMachine.getTarget().tIsMonster())
+            // console.log(`当前进入状态[${this._name}]`);
         this._stateMachine.setAction(this);
 
         if (this.funcOnEnter)
-            this.funcOnEnter();
+            this.funcOnEnter(param);
 
         this._transitionList.forEach(x => x.onEnable());
     }
@@ -56,9 +57,19 @@ class MachineAction
      * 触发器
      * @param triggerFlag 触发Flag
      */
-    public trigger(triggerFlag: string)
+    public trigger(triggerFlag: string, param: any = null)
     {
-        console.log(`状态行为[${this._name}]触发[${triggerFlag}]`);
-        this._transitionList.forEach(x => x.onTrigger(triggerFlag));
+        // if (this._stateMachine.getTarget().tIsMonster())
+            // console.log(`状态行为[${this._name}]触发[${triggerFlag}]`);
+        this._transitionList.forEach(x => x.onTrigger(triggerFlag, param));
+    }
+
+    /**
+     * 设置暂停
+     * @param paused 是否暂停
+     */
+    public setPaused(paused: boolean)
+    {
+        this._transitionList.forEach(x => x._paused = paused);
     }
 }
