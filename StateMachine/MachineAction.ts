@@ -35,13 +35,12 @@ class MachineAction
      */
     public enter(param: any)
     {
-        // if (this._stateMachine.getTarget().tIsMonster())
-            // console.log(`当前进入状态[${this._name}]`);
         this._stateMachine.setAction(this);
 
         if (this.funcOnEnter)
             this.funcOnEnter(param);
 
+        // 激活当前Action的所有Transition
         this._transitionList.forEach(x => x.onEnable());
     }
 
@@ -50,6 +49,7 @@ class MachineAction
      */
     public exit()
     {
+        // 冻结当前Action的所有Transition
         this._transitionList.forEach(x => x.onDisable());
     }
 
@@ -70,6 +70,6 @@ class MachineAction
      */
     public setPaused(paused: boolean)
     {
-        this._transitionList.forEach(x => x._paused = paused);
+        this._transitionList.forEach(x => x.setPaused(paused));
     }
 }

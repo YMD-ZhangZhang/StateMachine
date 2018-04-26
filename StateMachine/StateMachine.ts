@@ -3,18 +3,11 @@
  */
 class StateMachine
 {
-    private _target: IStateMachineTarget;
     private _nowAction: MachineAction;
     private _actionList: Array<MachineAction> = new Array<MachineAction>();
 
-    constructor(target: IStateMachineTarget)
+    constructor()
     {
-        this._target = target;
-    }
-
-    public getTarget() : IStateMachineTarget
-    {
-        return this._target;
     }
 
     public createAction(name: string) : MachineAction
