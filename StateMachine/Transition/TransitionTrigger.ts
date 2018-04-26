@@ -20,17 +20,19 @@ class TransitionTrigger extends MachineActionTransition
     /**
      * 触发器保护时间
      */
-    public setTriggerProtectTime(time: number)
+    public setTriggerProtectTime(time: number) : TransitionTrigger
     {
         this._triggerProtectTime = time;
+        return this;
     }
 
     /**
      * 触发器截止时间
      */
-    public setTriggerEndTime(time: number)
+    public setTriggerEndTime(time: number) : TransitionTrigger
     {
         this._triggerEndTime = time;
+        return this;
     }
 
     /**
