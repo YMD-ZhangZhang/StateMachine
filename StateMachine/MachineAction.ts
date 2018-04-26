@@ -1,5 +1,5 @@
 /**
- * 一个状态/行为，与游戏逻辑无关
+ * 一个状态/行为
  */
 class MachineAction
 {
@@ -59,8 +59,6 @@ class MachineAction
      */
     public trigger(triggerFlag: string, param: any = null)
     {
-        // if (this._stateMachine.getTarget().tIsMonster())
-            // console.log(`状态行为[${this._name}]触发[${triggerFlag}]`);
         this._transitionList.forEach(x => x.onTrigger(triggerFlag, param));
     }
 

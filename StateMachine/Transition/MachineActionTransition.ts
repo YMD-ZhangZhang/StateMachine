@@ -6,10 +6,10 @@ abstract class MachineActionTransition
 {
     private _fromAction: MachineAction;
     private _toAction: MachineAction;
-    
+
     protected _paused: boolean = false;
 
-    public constructor(fromAction, toAction)
+    constructor(fromAction, toAction)
     {
         this._fromAction = fromAction;
         this._toAction = toAction;

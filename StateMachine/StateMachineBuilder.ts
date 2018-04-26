@@ -116,193 +116,61 @@ class StateMachineBuilder
         };
 
         // 休闲待机 -> 休闲跑
-        let idle_run = new TransitionTrigger(idle, run);
-        // idle_run.setType(TransitionType.Trigger);
-        idle_run.setTriggerFlag("run");
-        idle_run.setTriggerProtectTime(0);
-        idle.addTransition(idle_run);
-
+        let idle_run = this.CreateTransitionTrigger(idle, run, "run");
         // 休闲待机 -> 战斗待机
-        let idle_fightidle = new TransitionTrigger(idle, fightidle);
-        // idle_fightidle.setType(TransitionType.Trigger);
-        idle_fightidle.setTriggerFlag("enterfight");
-        idle_fightidle.setTriggerProtectTime(0);
-        idle.addTransition(idle_fightidle);
-
-        // 休闲待机 -> 攻击1
-        // let idle_a1 = new MachineActionTransition(idle, attack1);
-        // idle_a1.setType(TracsitionType.Trigger);
-        // idle_a1.setTriggerFlag("attack";
-        // idle_a1.setTriggerProtectTime(0;
-        // idle.addTransition(idle_a1);
-
+        let idle_fightidle = this.CreateTransitionTrigger(idle, fightidle, "enterfight");
         // 休闲跑 -> 休闲待机
-        let run_idle = new TransitionTrigger(run, idle);
-        // run_idle.setType(TransitionType.Trigger);
-        run_idle.setTriggerFlag("idle");
-        run_idle.setTriggerProtectTime(0);
-        run.addTransition(run_idle);
-
-        // 休闲待机 -> 跳跃
-        // let idle_jump = new MachineActionTransition(idle, jump);
-        // idle_jump.setType(TracsitionType.Trigger);
-        // idle_jump.setTriggerFlag("jump";
-        // idle_jump.setTriggerProtectTime(0;
-        // idle.addTransition(idle_jump);
-
+        let run_idle = this.CreateTransitionTrigger(run, idle, "idle");
         // 休闲跑 -> 跳跃
-        let run_jump = new TransitionTrigger(run, jump);
-        // run_jump.setType(TransitionType.Trigger);
-        run_jump.setTriggerFlag("jump");
-        run_jump.setTriggerProtectTime(0);
-        run.addTransition(run_jump);
-
+        let run_jump = this.CreateTransitionTrigger(run, jump, "jump");
         // 跳跃 -> 战斗待机
-        let jump_fightidle = new TransitionDelay(jump, fightidle);
-        // jump_fightidle.setType(TransitionType.Delay);
-        jump_fightidle.setDelayTime(867);
-        jump.addTransition(jump_fightidle);
-
+        let jump_fightidle = this.CreateTransitionDelay(jump, fightidle, 867);
         // 战斗待机 -> 休闲待机
-        let fightidle_idle = new TransitionTrigger(fightidle, idle);
-        // fightidle_idle.setType(TransitionType.Trigger);
-        fightidle_idle.setTriggerFlag("exitfight");
-        fightidle_idle.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_idle);
-
+        let fightidle_idle = this.CreateTransitionTrigger(fightidle, idle, "exitfight");
         // 战斗待机 -> 攻击1
-        let fightidle_a1 = new TransitionTrigger(fightidle, attack1);
-        // fightidle_a1.setType(TransitionType.Trigger);
-        fightidle_a1.setTriggerFlag("attack");
-        fightidle_a1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_a1);
-
+        let fightidle_a1 = this.CreateTransitionTrigger(fightidle, attack1, "attack");
         // 战斗待机 -> 技能1
-        let fightidle_s1 = new TransitionTrigger(fightidle, skill1);
-        // fightidle_s1.setType(TransitionType.Trigger);
-        fightidle_s1.setTriggerFlag("skill1");
-        fightidle_s1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s1);
-
+        let fightidle_s1 = this.CreateTransitionTrigger(fightidle, skill1, "skill1");
         // 战斗待机 -> 技能2
-        let fightidle_s2 = new TransitionTrigger(fightidle, skill2);
-        // fightidle_s2.setType(TransitionType.Trigger);
-        fightidle_s2.setTriggerFlag("skill2");
-        fightidle_s2.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s2);
-
+        let fightidle_s2 = this.CreateTransitionTrigger(fightidle, skill2, "skill2");
         // 战斗待机 -> 技能3
-        let fightidle_s3 = new TransitionTrigger(fightidle, skill3);
-        // fightidle_s3.setType(TransitionType.Trigger);
-        fightidle_s3.setTriggerFlag("skill3");
-        fightidle_s3.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s3);
-
+        let fightidle_s3 = this.CreateTransitionTrigger(fightidle, skill3, "skill3");
         // 战斗待机 -> 技能4
-        let fightidle_s4 = new TransitionTrigger(fightidle, skill4);
-        // fightidle_s4.setType(TransitionType.Trigger);
-        fightidle_s4.setTriggerFlag("skill4");
-        fightidle_s4.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s4);
-
+        let fightidle_s4 = this.CreateTransitionTrigger(fightidle, skill4, "skill4");
         // 战斗待机 -> 战斗跑
-        let fightidle_fightrun = new TransitionTrigger(fightidle, fightrun);
-        // fightidle_fightrun.setType(TransitionType.Trigger);
-        fightidle_fightrun.setTriggerFlag("run");
-        fightidle_fightrun.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_fightrun);
-
+        let fightidle_fightrun = this.CreateTransitionTrigger(fightidle, fightrun, "run");
         // 战斗待机 -> 跳跃
-        let fightidle_jump = new TransitionTrigger(fightidle, jump);
-        // fightidle_jump.setType(TransitionType.Trigger);
-        fightidle_jump.setTriggerFlag("jump");
-        fightidle_jump.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_jump);
-
+        let fightidle_jump = this.CreateTransitionTrigger(fightidle, jump, "jump");
         // 战斗跑 -> 跳跃
-        let fightrun_jump = new TransitionTrigger(fightrun, jump);
-        // fightrun_jump.setType(TransitionType.Trigger);
-        fightrun_jump.setTriggerFlag("jump");
-        fightrun_jump.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_jump);
-
+        let fightrun_jump = this.CreateTransitionTrigger(fightrun, jump, "jump");
         // 战斗跑 -> 战斗待机
-        let fightrun_fightidle = new TransitionTrigger(fightrun, fightidle);
-        // fightrun_fightidle.setType(TransitionType.Trigger);
-        fightrun_fightidle.setTriggerFlag("idle");
-        fightrun_fightidle.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_fightidle);
-
+        let fightrun_fightidle = this.CreateTransitionTrigger(fightrun, fightidle, "idle");
         // 战斗跑 -> 休闲跑
-        let fightrun_run = new TransitionTrigger(fightrun, run);
-        // fightrun_run.setType(TransitionType.Trigger);
-        fightrun_run.setTriggerFlag("exitfight");
-        fightrun_run.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_run);
-
+        let fightrun_run = this.CreateTransitionTrigger(fightrun, run, "exitfight");
         // 攻击1 -> 战斗待机
-        let a1_fightidle = new TransitionDelay(attack1, fightidle);
-        // a1_fightidle.setType(TransitionType.Delay);
-        a1_fightidle.setDelayTime(667);
-        attack1.addTransition(a1_fightidle);
-
+        let a1_fightidle = this.CreateTransitionDelay(attack1, fightidle, 667);
         // 攻击1 -> 攻击2
-        let a1_a2 = new TransitionTrigger(attack1, attack2);
-        // a1_a2.setType(TransitionType.Trigger);
-        a1_a2.setTriggerFlag("attack");
+        let a1_a2 = this.CreateTransitionTrigger(attack1, attack2, "attack");
         a1_a2.setTriggerProtectTime(300);
-        attack1.addTransition(a1_a2);
-
         // 攻击2 -> 战斗待机
-        let a2_fightidle = new TransitionDelay(attack2, fightidle);
-        // a2_fightidle.setType(TransitionType.Delay);
-        a2_fightidle.setDelayTime(733);
-        attack2.addTransition(a2_fightidle);
-
+        let a2_fightidle = this.CreateTransitionDelay(attack2, fightidle, 733);
         // 攻击2 -> 攻击3
-        let a2_a3 = new TransitionTrigger(attack2, attack3);
-        // a2_a3.setType(TransitionType.Trigger);
-        a2_a3.setTriggerFlag("attack");
+        let a2_a3 = this.CreateTransitionTrigger(attack2, attack3, "attack");
         a2_a3.setTriggerProtectTime(300);
-        attack2.addTransition(a2_a3);
-
         // 攻击3 -> 战斗待机
-        let a3_fightidle = new TransitionDelay(attack3, fightidle);
-        // a3_fightidle.setType(TransitionType.Delay);
-        a3_fightidle.setDelayTime(1000);
-        attack3.addTransition(a3_fightidle);
-
+        let a3_fightidle = this.CreateTransitionDelay(attack3, fightidle, 1000);
         // 攻击3 -> 攻击1
-        let a3_a1 = new TransitionTrigger(attack3, attack1);
-        // a3_a1.setType(TransitionType.Trigger);
-        a3_a1.setTriggerFlag("attack");
+        let a3_a1 = this.CreateTransitionTrigger(attack3, attack1, "attack");
         a3_a1.setTriggerProtectTime(633);
         a3_a1.setTriggerEndTime(999);
-        attack3.addTransition(a3_a1);
-
         // 技能1 -> 战斗待机
-        let s1_fightidle = new TransitionDelay(skill1, fightidle);
-        // s1_fightidle.setType(TransitionType.Delay);
-        s1_fightidle.setDelayTime(1333);
-        skill1.addTransition(s1_fightidle);
-
+        let s1_fightidle = this.CreateTransitionDelay(skill1, fightidle, 1333);
         // 技能2 -> 战斗待机
-        let s2_fightidle = new TransitionDelay(skill2, fightidle);
-        // s2_fightidle.setType(TransitionType.Delay);
-        s2_fightidle.setDelayTime(1767);
-        skill2.addTransition(s2_fightidle);
-
+        let s2_fightidle = this.CreateTransitionDelay(skill2, fightidle, 1767);
         // 技能3 -> 战斗待机
-        let s3_fightidle = new TransitionDelay(skill3, fightidle);
-        // s3_fightidle.setType(TransitionType.Delay);
-        s3_fightidle.setDelayTime(1000);
-        skill3.addTransition(s3_fightidle);
-
+        let s3_fightidle = this.CreateTransitionDelay(skill3, fightidle, 1000);
         // 技能4 -> 战斗待机
-        let s4_fightidle = new TransitionDelay(skill4, fightidle);
-        // s4_fightidle.setType(TransitionType.Delay);
-        s4_fightidle.setDelayTime(2000);
-        skill4.addTransition(s4_fightidle);
+        let s4_fightidle = this.CreateTransitionDelay(skill4, fightidle, 2000);
 
         return sm;
     }
@@ -398,193 +266,61 @@ class StateMachineBuilder
         };
 
         // 休闲待机 -> 休闲跑
-        let idle_run = new TransitionTrigger(idle, run);
-        // idle_run.setType(TransitionType.Trigger);
-        idle_run.setTriggerFlag("run");
-        idle_run.setTriggerProtectTime(0);
-        idle.addTransition(idle_run);
-
+        let idle_run = this.CreateTransitionTrigger(idle, run, "run");
         // 休闲待机 -> 战斗待机
-        let idle_fightidle = new TransitionTrigger(idle, fightidle);
-        // idle_fightidle.setType(TransitionType.Trigger);
-        idle_fightidle.setTriggerFlag("enterfight");
-        idle_fightidle.setTriggerProtectTime(0);
-        idle.addTransition(idle_fightidle);
-
-        // 休闲待机 -> 攻击1
-        // let idle_a1 = new MachineActionTransition(idle, attack1);
-        // idle_a1.setType(TracsitionType.Trigger);
-        // idle_a1.setTriggerFlag("attack";
-        // idle_a1.setTriggerProtectTime(0;
-        // idle.addTransition(idle_a1);
-
+        let idle_fightidle = this.CreateTransitionTrigger(idle, fightidle, "enterfight");
         // 休闲跑 -> 休闲待机
-        let run_idle = new TransitionTrigger(run, idle);
-        // run_idle.setType(TransitionType.Trigger);
-        run_idle.setTriggerFlag("idle");
-        run_idle.setTriggerProtectTime(0);
-        run.addTransition(run_idle);
-
-        // 休闲待机 -> 跳跃
-        // let idle_jump = new MachineActionTransition(idle, jump);
-        // idle_jump.setType(TracsitionType.Trigger);
-        // idle_jump.setTriggerFlag("jump";
-        // idle_jump.setTriggerProtectTime(0;
-        // idle.addTransition(idle_jump);
-
+        let run_idle = this.CreateTransitionTrigger(run, idle, "idle");
         // 休闲跑 -> 跳跃
-        let run_jump = new TransitionTrigger(run, jump);
-        // run_jump.setType(TransitionType.Trigger);
-        run_jump.setTriggerFlag("jump");
-        run_jump.setTriggerProtectTime(0);
-        run.addTransition(run_jump);
-
+        let run_jump = this.CreateTransitionTrigger(run, jump, "jump");
         // 跳跃 -> 战斗待机
-        let jump_fightidle = new TransitionDelay(jump, fightidle);
-        // jump_fightidle.setType(TransitionType.Delay);
-        jump_fightidle.setDelayTime(867);
-        jump.addTransition(jump_fightidle);
-
+        let jump_fightidle = this.CreateTransitionDelay(jump, fightidle, 867);
         // 战斗待机 -> 休闲待机
-        let fightidle_idle = new TransitionTrigger(fightidle, idle);
-        // fightidle_idle.setType(TransitionType.Trigger);
-        fightidle_idle.setTriggerFlag("exitfight");
-        fightidle_idle.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_idle);
-
+        let fightidle_idle = this.CreateTransitionTrigger(fightidle, idle, "exitfight");
         // 战斗待机 -> 攻击1
-        let fightidle_a1 = new TransitionTrigger(fightidle, attack1);
-        // fightidle_a1.setType(TransitionType.Trigger);
-        fightidle_a1.setTriggerFlag("attack");
-        fightidle_a1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_a1);
-
+        let fightidle_a1 = this.CreateTransitionTrigger(fightidle, attack1, "attack");
         // 战斗待机 -> 技能1
-        let fightidle_s1 = new TransitionTrigger(fightidle, skill1);
-        // fightidle_s1.setType(TransitionType.Trigger);
-        fightidle_s1.setTriggerFlag("skill1");
-        fightidle_s1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s1);
-
+        let fightidle_s1 = this.CreateTransitionTrigger(fightidle, skill1, "skill1");
         // 战斗待机 -> 技能2
-        let fightidle_s2 = new TransitionTrigger(fightidle, skill2);
-        // fightidle_s2.setType(TransitionType.Trigger);
-        fightidle_s2.setTriggerFlag("skill2");
-        fightidle_s2.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s2);
-
+        let fightidle_s2 = this.CreateTransitionTrigger(fightidle, skill2, "skill2");
         // 战斗待机 -> 技能3
-        let fightidle_s3 = new TransitionTrigger(fightidle, skill3);
-        // fightidle_s3.setType(TransitionType.Trigger);
-        fightidle_s3.setTriggerFlag("skill3");
-        fightidle_s3.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s3);
-
+        let fightidle_s3 = this.CreateTransitionTrigger(fightidle, skill3, "skill3");
         // 战斗待机 -> 技能4
-        let fightidle_s4 = new TransitionTrigger(fightidle, skill4);
-        // fightidle_s4.setType(TransitionType.Trigger);
-        fightidle_s4.setTriggerFlag("skill4");
-        fightidle_s4.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s4);
-
+        let fightidle_s4 = this.CreateTransitionTrigger(fightidle, skill4, "skill4");
         // 战斗待机 -> 战斗跑
-        let fightidle_fightrun = new TransitionTrigger(fightidle, fightrun);
-        // fightidle_fightrun.setType(TransitionType.Trigger);
-        fightidle_fightrun.setTriggerFlag("run");
-        fightidle_fightrun.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_fightrun);
-
+        let fightidle_fightrun = this.CreateTransitionTrigger(fightidle, fightrun, "run");
         // 战斗待机 -> 跳跃
-        let fightidle_jump = new TransitionTrigger(fightidle, jump);
-        // fightidle_jump.setType(TransitionType.Trigger);
-        fightidle_jump.setTriggerFlag("jump");
-        fightidle_jump.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_jump);
-
+        let fightidle_jump = this.CreateTransitionTrigger(fightidle, jump, "jump");
         // 战斗跑 -> 跳跃
-        let fightrun_jump = new TransitionTrigger(fightrun, jump);
-        // fightrun_jump.setType(TransitionType.Trigger);
-        fightrun_jump.setTriggerFlag("jump");
-        fightrun_jump.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_jump);
-
+        let fightrun_jump = this.CreateTransitionTrigger(fightrun, jump, "jump");
         // 战斗跑 -> 战斗待机
-        let fightrun_fightidle = new TransitionTrigger(fightrun, fightidle);
-        // fightrun_fightidle.setType(TransitionType.Trigger);
-        fightrun_fightidle.setTriggerFlag("idle");
-        fightrun_fightidle.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_fightidle);
-
+        let fightrun_fightidle = this.CreateTransitionTrigger(fightrun, fightidle, "idle");
         // 战斗跑 -> 休闲跑
-        let fightrun_run = new TransitionTrigger(fightrun, run);
-        // fightrun_run.setType(TransitionType.Trigger);
-        fightrun_run.setTriggerFlag("exitfight");
-        fightrun_run.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_run);
-
+        let fightrun_run = this.CreateTransitionTrigger(fightrun, run, "exitfight");
         // 攻击1 -> 战斗待机
-        let a1_fightidle = new TransitionDelay(attack1, fightidle);
-        // a1_fightidle.setType(TransitionType.Delay);
-        a1_fightidle.setDelayTime(467);
-        attack1.addTransition(a1_fightidle);
-
+        let a1_fightidle = this.CreateTransitionDelay(attack1, fightidle, 467);
         // 攻击1 -> 攻击2
-        let a1_a2 = new TransitionTrigger(attack1, attack2);
-        // a1_a2.setType(TransitionType.Trigger);
-        a1_a2.setTriggerFlag("attack");
+        let a1_a2 = this.CreateTransitionTrigger(attack1, attack2, "attack");
         a1_a2.setTriggerProtectTime(300);
-        attack1.addTransition(a1_a2);
-
         // 攻击2 -> 战斗待机
-        let a2_fightidle = new TransitionDelay(attack2, fightidle);
-        // a2_fightidle.setType(TransitionType.Delay);
-        a2_fightidle.setDelayTime(600);
-        attack2.addTransition(a2_fightidle);
-
+        let a2_fightidle = this.CreateTransitionDelay(attack2, fightidle, 600);
         // 攻击2 -> 攻击3
-        let a2_a3 = new TransitionTrigger(attack2, attack3);
-        // a2_a3.setType(TransitionType.Trigger);
-        a2_a3.setTriggerFlag("attack");
+        let a2_a3 = this.CreateTransitionTrigger(attack2, attack3, "attack");
         a2_a3.setTriggerProtectTime(300);
-        attack2.addTransition(a2_a3);
-
         // 攻击3 -> 战斗待机
-        let a3_fightidle = new TransitionDelay(attack3, fightidle);
-        // a3_fightidle.setType(TransitionType.Delay);
-        a3_fightidle.setDelayTime(800);
-        attack3.addTransition(a3_fightidle);
-
+        let a3_fightidle = this.CreateTransitionDelay(attack3, fightidle, 800);
         // 攻击3 -> 攻击1
-        let a3_a1 = new TransitionTrigger(attack3, attack1);
-        // a3_a1.setType(TransitionType.Trigger);
-        a3_a1.setTriggerFlag("attack");
+        let a3_a1 = this.CreateTransitionTrigger(attack3, attack1, "attack");
         a3_a1.setTriggerProtectTime(700);
         a3_a1.setTriggerEndTime(799);
-        attack3.addTransition(a3_a1);
-
         // 技能1 -> 战斗待机
-        let s1_fightidle = new TransitionDelay(skill1, fightidle);
-        // s1_fightidle.setType(TransitionType.Delay);
-        s1_fightidle.setDelayTime(1100);
-        skill1.addTransition(s1_fightidle);
-
+        let s1_fightidle = this.CreateTransitionDelay(skill1, fightidle, 1100);
         // 技能2 -> 战斗待机
-        let s2_fightidle = new TransitionDelay(skill2, fightidle);
-        // s2_fightidle.setType(TransitionType.Delay);
-        s2_fightidle.setDelayTime(1500);
-        skill2.addTransition(s2_fightidle);
-
+        let s2_fightidle = this.CreateTransitionDelay(skill2, fightidle, 1500);
         // 技能3 -> 战斗待机
-        let s3_fightidle = new TransitionDelay(skill3, fightidle);
-        // s3_fightidle.setType(TransitionType.Delay);
-        s3_fightidle.setDelayTime(1500);
-        skill3.addTransition(s3_fightidle);
-
+        let s3_fightidle = this.CreateTransitionDelay(skill3, fightidle, 1500);
         // 技能4 -> 战斗待机
-        let s4_fightidle = new TransitionDelay(skill4, fightidle);
-        // s4_fightidle.setType(TransitionType.Delay);
-        s4_fightidle.setDelayTime(1333);
-        skill4.addTransition(s4_fightidle);
+        let s4_fightidle = this.CreateTransitionDelay(skill4, fightidle, 1333);
 
         return sm;
     }
@@ -680,179 +416,61 @@ class StateMachineBuilder
         };
 
         // 休闲待机 -> 休闲跑
-        let idle_run = new TransitionTrigger(idle, run);
-        // idle_run.setType(TransitionType.Trigger);
-        idle_run.setTriggerFlag("run");
-        idle_run.setTriggerProtectTime(0);
-        idle.addTransition(idle_run);
-
+        let idle_run = this.CreateTransitionTrigger(idle, run, "run");
         // 休闲待机 -> 战斗待机
-        let idle_fightidle = new TransitionTrigger(idle, fightidle);
-        // idle_fightidle.setType(TransitionType.Trigger);
-        idle_fightidle.setTriggerFlag("enterfight");
-        idle_fightidle.setTriggerProtectTime(0);
-        idle.addTransition(idle_fightidle);
-
+        let idle_fightidle = this.CreateTransitionTrigger(idle, fightidle, "enterfight");
         // 休闲跑 -> 休闲待机
-        let run_idle = new TransitionTrigger(run, idle);
-        // run_idle.setType(TransitionType.Trigger);
-        run_idle.setTriggerFlag("idle");
-        run_idle.setTriggerProtectTime(0);
-        run.addTransition(run_idle);
-
+        let run_idle = this.CreateTransitionTrigger(run, idle, "idle");
         // 休闲跑 -> 跳跃
-        let run_jump = new TransitionTrigger(run, jump);
-        // run_jump.setType(TransitionType.Trigger);
-        run_jump.setTriggerFlag("jump");
-        run_jump.setTriggerProtectTime(0);
-        run.addTransition(run_jump);
-
+        let run_jump = this.CreateTransitionTrigger(run, jump, "jump");
         // 跳跃 -> 战斗待机
-        let jump_fightidle = new TransitionDelay(jump, fightidle);
-        // jump_fightidle.setType(TransitionType.Delay);
-        jump_fightidle.setDelayTime(867);
-        jump.addTransition(jump_fightidle);
-
+        let jump_fightidle = this.CreateTransitionDelay(jump, fightidle, 867);
         // 战斗待机 -> 休闲待机
-        let fightidle_idle = new TransitionTrigger(fightidle, idle);
-        // fightidle_idle.setType(TransitionType.Trigger);
-        fightidle_idle.setTriggerFlag("exitfight");
-        fightidle_idle.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_idle);
-
+        let fightidle_idle = this.CreateTransitionTrigger(fightidle, idle, "exitfight");
         // 战斗待机 -> 攻击1
-        let fightidle_a1 = new TransitionTrigger(fightidle, attack1);
-        // fightidle_a1.setType(TransitionType.Trigger);
-        fightidle_a1.setTriggerFlag("attack");
-        fightidle_a1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_a1);
-
+        let fightidle_a1 = this.CreateTransitionTrigger(fightidle, attack1, "attack");
         // 战斗待机 -> 技能1
-        let fightidle_s1 = new TransitionTrigger(fightidle, skill1);
-        // fightidle_s1.setType(TransitionType.Trigger);
-        fightidle_s1.setTriggerFlag("skill1");
-        fightidle_s1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s1);
-
+        let fightidle_s1 = this.CreateTransitionTrigger(fightidle, skill1, "skill1");
         // 战斗待机 -> 技能2
-        let fightidle_s2 = new TransitionTrigger(fightidle, skill2);
-        // fightidle_s2.setType(TransitionType.Trigger);
-        fightidle_s2.setTriggerFlag("skill2");
-        fightidle_s2.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s2);
-
+        let fightidle_s2 = this.CreateTransitionTrigger(fightidle, skill2, "skill2");
         // 战斗待机 -> 技能3
-        let fightidle_s3 = new TransitionTrigger(fightidle, skill3);
-        // fightidle_s3.setType(TransitionType.Trigger);
-        fightidle_s3.setTriggerFlag("skill3");
-        fightidle_s3.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s3);
-
+        let fightidle_s3 = this.CreateTransitionTrigger(fightidle, skill3, "skill3");
         // 战斗待机 -> 技能4
-        let fightidle_s4 = new TransitionTrigger(fightidle, skill4);
-        // fightidle_s4.setType(TransitionType.Trigger);
-        fightidle_s4.setTriggerFlag("skill4");
-        fightidle_s4.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s4);
-
+        let fightidle_s4 = this.CreateTransitionTrigger(fightidle, skill4, "skill4");
         // 战斗待机 -> 战斗跑
-        let fightidle_fightrun = new TransitionTrigger(fightidle, fightrun);
-        // fightidle_fightrun.setType(TransitionType.Trigger);
-        fightidle_fightrun.setTriggerFlag("run");
-        fightidle_fightrun.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_fightrun);
-
+        let fightidle_fightrun = this.CreateTransitionTrigger(fightidle, fightrun, "run");
         // 战斗待机 -> 跳跃
-        let fightidle_jump = new TransitionTrigger(fightidle, jump);
-        // fightidle_jump.setType(TransitionType.Trigger);
-        fightidle_jump.setTriggerFlag("jump");
-        fightidle_jump.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_jump);
-
+        let fightidle_jump = this.CreateTransitionTrigger(fightidle, jump, "jump");
         // 战斗跑 -> 跳跃
-        let fightrun_jump = new TransitionTrigger(fightrun, jump);
-        // fightrun_jump.setType(TransitionType.Trigger);
-        fightrun_jump.setTriggerFlag("jump");
-        fightrun_jump.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_jump);
-
+        let fightrun_jump = this.CreateTransitionTrigger(fightrun, jump, "jump");
         // 战斗跑 -> 战斗待机
-        let fightrun_fightidle = new TransitionTrigger(fightrun, fightidle);
-        // fightrun_fightidle.setType(TransitionType.Trigger);
-        fightrun_fightidle.setTriggerFlag("idle");
-        fightrun_fightidle.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_fightidle);
-
+        let fightrun_fightidle = this.CreateTransitionTrigger(fightrun, fightidle, "idle");
         // 战斗跑 -> 休闲跑
-        let fightrun_run = new TransitionTrigger(fightrun, run);
-        // fightrun_run.setType(TransitionType.Trigger);
-        fightrun_run.setTriggerFlag("exitfight");
-        fightrun_run.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_run);
-
+        let fightrun_run = this.CreateTransitionTrigger(fightrun, run, "exitfight");
         // 攻击1 -> 战斗待机
-        let a1_fightidle = new TransitionDelay(attack1, fightidle);
-        // a1_fightidle.setType(TransitionType.Delay);
-        a1_fightidle.setDelayTime(433);
-        attack1.addTransition(a1_fightidle);
-
+        let a1_fightidle = this.CreateTransitionDelay(attack1, fightidle, 433);
         // 攻击1 -> 攻击2
-        let a1_a2 = new TransitionTrigger(attack1, attack2);
-        // a1_a2.setType(TransitionType.Trigger);
-        a1_a2.setTriggerFlag("attack");
+        let a1_a2 = this.CreateTransitionTrigger(attack1, attack2, "attack");
         a1_a2.setTriggerProtectTime(200);
-        attack1.addTransition(a1_a2);
-
         // 攻击2 -> 战斗待机
-        let a2_fightidle = new TransitionDelay(attack2, fightidle);
-        // a2_fightidle.setType(TransitionType.Delay);
-        a2_fightidle.setDelayTime(433);
-        attack2.addTransition(a2_fightidle);
-
+        let a2_fightidle = this.CreateTransitionDelay(attack2, fightidle, 433);
         // 攻击2 -> 攻击3
-        let a2_a3 = new TransitionTrigger(attack2, attack3);
-        // a2_a3.setType(TransitionType.Trigger);
-        a2_a3.setTriggerFlag("attack");
+        let a2_a3 = this.CreateTransitionTrigger(attack2, attack3, "attack");
         a2_a3.setTriggerProtectTime(200);
-        attack2.addTransition(a2_a3);
-
         // 攻击3 -> 战斗待机
-        let a3_fightidle = new TransitionDelay(attack3, fightidle);
-        // a3_fightidle.setType(TransitionType.Delay);
-        a3_fightidle.setDelayTime(667);
-        attack3.addTransition(a3_fightidle);
-
+        let a3_fightidle = this.CreateTransitionDelay(attack3, fightidle, 667);
         // 攻击3 -> 攻击1
-        let a3_a1 = new TransitionTrigger(attack3, attack1);
-        // a3_a1.setType(TransitionType.Trigger);
-        a3_a1.setTriggerFlag("attack");
+        let a3_a1 = this.CreateTransitionTrigger(attack3, attack1, "attack");
         a3_a1.setTriggerProtectTime(567);
         a3_a1.setTriggerEndTime(666);
-        attack3.addTransition(a3_a1);
-
         // 技能1 -> 战斗待机
-        let s1_fightidle = new TransitionDelay(skill1, fightidle);
-        // s1_fightidle.setType(TransitionType.Delay);
-        s1_fightidle.setDelayTime(1067);
-        skill1.addTransition(s1_fightidle);
-
+        let s1_fightidle = this.CreateTransitionDelay(skill1, fightidle, 1067);
         // 技能2 -> 战斗待机
-        let s2_fightidle = new TransitionDelay(skill2, fightidle);
-        // s2_fightidle.setType(TransitionType.Delay);
-        s2_fightidle.setDelayTime(1367);
-        skill2.addTransition(s2_fightidle);
-
+        let s2_fightidle = this.CreateTransitionDelay(skill2, fightidle, 1367);
         // 技能3 -> 战斗待机
-        let s3_fightidle = new TransitionDelay(skill3, fightidle);
-        // s3_fightidle.setType(TransitionType.Delay);
-        s3_fightidle.setDelayTime(1600);
-        skill3.addTransition(s3_fightidle);
-
+        let s3_fightidle = this.CreateTransitionDelay(skill3, fightidle, 1600);
         // 技能4 -> 战斗待机
-        let s4_fightidle = new TransitionDelay(skill4, fightidle);
-        // s4_fightidle.setType(TransitionType.Delay);
-        s4_fightidle.setDelayTime(1733);
-        skill4.addTransition(s4_fightidle);
+        let s4_fightidle = this.CreateTransitionDelay(skill4, fightidle, 1733);
 
         return sm;
     }
@@ -948,179 +566,61 @@ class StateMachineBuilder
         };
 
         // 休闲待机 -> 休闲跑
-        let idle_run = new TransitionTrigger(idle, run);
-        // idle_run.setType(TransitionType.Trigger);
-        idle_run.setTriggerFlag("run");
-        idle_run.setTriggerProtectTime(0);
-        idle.addTransition(idle_run);
-
+        let idle_run = this.CreateTransitionTrigger(idle, run, "run");
         // 休闲待机 -> 战斗待机
-        let idle_fightidle = new TransitionTrigger(idle, fightidle);
-        // idle_fightidle.setType(TransitionType.Trigger);
-        idle_fightidle.setTriggerFlag("enterfight");
-        idle_fightidle.setTriggerProtectTime(0);
-        idle.addTransition(idle_fightidle);
-
+        let idle_fightidle = this.CreateTransitionTrigger(idle, fightidle, "enterfight");
         // 休闲跑 -> 休闲待机
-        let run_idle = new TransitionTrigger(run, idle);
-        // run_idle.setType(TransitionType.Trigger);
-        run_idle.setTriggerFlag("idle");
-        run_idle.setTriggerProtectTime(0);
-        run.addTransition(run_idle);
-
+        let run_idle = this.CreateTransitionTrigger(run, idle, "idle");
         // 休闲跑 -> 跳跃
-        let run_jump = new TransitionTrigger(run, jump);
-        // run_jump.setType(TransitionType.Trigger);
-        run_jump.setTriggerFlag("jump");
-        run_jump.setTriggerProtectTime(0);
-        run.addTransition(run_jump);
-
+        let run_jump = this.CreateTransitionTrigger(run, jump, "jump");
         // 跳跃 -> 战斗待机
-        let jump_fightidle = new TransitionDelay(jump, fightidle);
-        // jump_fightidle.setType(TransitionType.Delay);
-        jump_fightidle.setDelayTime(867);
-        jump.addTransition(jump_fightidle);
-
+        let jump_fightidle = this.CreateTransitionDelay(jump, fightidle, 867);
         // 战斗待机 -> 休闲待机
-        let fightidle_idle = new TransitionTrigger(fightidle, idle);
-        // fightidle_idle.setType(TransitionType.Trigger);
-        fightidle_idle.setTriggerFlag("exitfight");
-        fightidle_idle.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_idle);
-
+        let fightidle_idle = this.CreateTransitionTrigger(fightidle, idle, "exitfight");
         // 战斗待机 -> 攻击1
-        let fightidle_a1 = new TransitionTrigger(fightidle, attack1);
-        // fightidle_a1.setType(TransitionType.Trigger);
-        fightidle_a1.setTriggerFlag("attack");
-        fightidle_a1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_a1);
-
+        let fightidle_a1 = this.CreateTransitionTrigger(fightidle, attack1, "attack");
         // 战斗待机 -> 技能1
-        let fightidle_s1 = new TransitionTrigger(fightidle, skill1);
-        // fightidle_s1.setType(TransitionType.Trigger);
-        fightidle_s1.setTriggerFlag("skill1");
-        fightidle_s1.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s1);
-
+        let fightidle_s1 = this.CreateTransitionTrigger(fightidle, skill1, "skill1");
         // 战斗待机 -> 技能2
-        let fightidle_s2 = new TransitionTrigger(fightidle, skill2);
-        // fightidle_s2.setType(TransitionType.Trigger);
-        fightidle_s2.setTriggerFlag("skill2");
-        fightidle_s2.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s2);
-
+        let fightidle_s2 = this.CreateTransitionTrigger(fightidle, skill2, "skill2");
         // 战斗待机 -> 技能3
-        let fightidle_s3 = new TransitionTrigger(fightidle, skill3);
-        // fightidle_s3.setType(TransitionType.Trigger);
-        fightidle_s3.setTriggerFlag("skill3");
-        fightidle_s3.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s3);
-
+        let fightidle_s3 = this.CreateTransitionTrigger(fightidle, skill3, "skill3");
         // 战斗待机 -> 技能4
-        let fightidle_s4 = new TransitionTrigger(fightidle, skill4);
-        // fightidle_s4.setType(TransitionType.Trigger);
-        fightidle_s4.setTriggerFlag("skill4");
-        fightidle_s4.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_s4);
-
+        let fightidle_s4 = this.CreateTransitionTrigger(fightidle, skill4, "skill4");
         // 战斗待机 -> 战斗跑
-        let fightidle_fightrun = new TransitionTrigger(fightidle, fightrun);
-        // fightidle_fightrun.setType(TransitionType.Trigger);
-        fightidle_fightrun.setTriggerFlag("run");
-        fightidle_fightrun.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_fightrun);
-
+        let fightidle_fightrun = this.CreateTransitionTrigger(fightidle, fightrun, "run");
         // 战斗待机 -> 跳跃
-        let fightidle_jump = new TransitionTrigger(fightidle, jump);
-        // fightidle_jump.setType(TransitionType.Trigger);
-        fightidle_jump.setTriggerFlag("jump");
-        fightidle_jump.setTriggerProtectTime(0);
-        fightidle.addTransition(fightidle_jump);
-
+        let fightidle_jump = this.CreateTransitionTrigger(fightidle, jump, "jump");
         // 战斗跑 -> 跳跃
-        let fightrun_jump = new TransitionTrigger(fightrun, jump);
-        // fightrun_jump.setType(TransitionType.Trigger);
-        fightrun_jump.setTriggerFlag("jump");
-        fightrun_jump.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_jump);
-
+        let fightrun_jump = this.CreateTransitionTrigger(fightrun, jump, "jump");
         // 战斗跑 -> 战斗待机
-        let fightrun_fightidle = new TransitionTrigger(fightrun, fightidle);
-        // fightrun_fightidle.setType(TransitionType.Trigger);
-        fightrun_fightidle.setTriggerFlag("idle");
-        fightrun_fightidle.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_fightidle);
-
+        let fightrun_fightidle = this.CreateTransitionTrigger(fightrun, fightidle, "idle");
         // 战斗跑 -> 休闲跑
-        let fightrun_run = new TransitionTrigger(fightrun, run);
-        // fightrun_run.setType(TransitionType.Trigger);
-        fightrun_run.setTriggerFlag("exitfight");
-        fightrun_run.setTriggerProtectTime(0);
-        fightrun.addTransition(fightrun_run);
-
+        let fightrun_run = this.CreateTransitionTrigger(fightrun, run, "exitfight");
         // 攻击1 -> 战斗待机
-        let a1_fightidle = new TransitionDelay(attack1, fightidle);
-        // a1_fightidle.setType(TransitionType.Delay);
-        a1_fightidle.setDelayTime(667);
-        attack1.addTransition(a1_fightidle);
-
+        let a1_fightidle = this.CreateTransitionDelay(attack1, fightidle, 667);
         // 攻击1 -> 攻击2
-        let a1_a2 = new TransitionTrigger(attack1, attack2);
-        // a1_a2.setType(TransitionType.Trigger);
-        a1_a2.setTriggerFlag("attack");
+        let a1_a2 = this.CreateTransitionTrigger(attack1, attack2, "attack");
         a1_a2.setTriggerProtectTime(300);
-        attack1.addTransition(a1_a2);
-
         // 攻击2 -> 战斗待机
-        let a2_fightidle = new TransitionDelay(attack2, fightidle);
-        // a2_fightidle.setType(TransitionType.Delay);
-        a2_fightidle.setDelayTime(667);
-        attack2.addTransition(a2_fightidle);
-
+        let a2_fightidle = this.CreateTransitionDelay(attack2, fightidle, 667);
         // 攻击2 -> 攻击3
-        let a2_a3 = new TransitionTrigger(attack2, attack3);
-        // a2_a3.setType(TransitionType.Trigger);
-        a2_a3.setTriggerFlag("attack");
+        let a2_a3 = this.CreateTransitionTrigger(attack2, attack3, "attack");
         a2_a3.setTriggerProtectTime(300);
-        attack2.addTransition(a2_a3);
-
         // 攻击3 -> 战斗待机
-        let a3_fightidle = new TransitionDelay(attack3, fightidle);
-        // a3_fightidle.setType(TransitionType.Delay);
-        a3_fightidle.setDelayTime(1300);
-        attack3.addTransition(a3_fightidle);
-
+        let a3_fightidle = this.CreateTransitionDelay(attack3, fightidle, 1300);
         // 攻击3 -> 攻击1
-        let a3_a1 = new TransitionTrigger(attack3, attack1);
-        // a3_a1.setType(TransitionType.Trigger);
-        a3_a1.setTriggerFlag("attack");
+        let a3_a1 = this.CreateTransitionTrigger(attack3, attack1, "attack");
         a3_a1.setTriggerProtectTime(850);
         a3_a1.setTriggerEndTime(1299);
-        attack3.addTransition(a3_a1);
-
         // 技能1 -> 战斗待机
-        let s1_fightidle = new TransitionDelay(skill1, fightidle);
-        // s1_fightidle.setType(TransitionType.Delay);
-        s1_fightidle.setDelayTime(1533);
-        skill1.addTransition(s1_fightidle);
-
+        let s1_fightidle = this.CreateTransitionDelay(skill1, fightidle, 1533);
         // 技能2 -> 战斗待机
-        let s2_fightidle = new TransitionDelay(skill2, fightidle);
-        // s2_fightidle.setType(TransitionType.Delay);
-        s2_fightidle.setDelayTime(1833);
-        skill2.addTransition(s2_fightidle);
-
+        let s2_fightidle = this.CreateTransitionDelay(skill2, fightidle, 1833);
         // 技能3 -> 战斗待机
-        let s3_fightidle = new TransitionDelay(skill3, fightidle);
-        // s3_fightidle.setType(TransitionType.Delay);
-        s3_fightidle.setDelayTime(1200);
-        skill3.addTransition(s3_fightidle);
-
+        let s3_fightidle = this.CreateTransitionDelay(skill3, fightidle, 1200);
         // 技能4 -> 战斗待机
-        let s4_fightidle = new TransitionDelay(skill4, fightidle);
-        // s4_fightidle.setType(TransitionType.Delay);
-        s4_fightidle.setDelayTime(1600);
-        skill4.addTransition(s4_fightidle);
+        let s4_fightidle = this.CreateTransitionDelay(skill4, fightidle, 1600);
 
         return sm;
     }
@@ -1171,65 +671,44 @@ class StateMachineBuilder
         };
 
         // 休闲待机 -> 攻击
-        let idle_attack = new TransitionTrigger(idle, attack);
-        // idle_attack.setType(TransitionType.Trigger);
-        idle_attack.setTriggerFlag("attack");
-        idle.addTransition(idle_attack);
-
+        let idle_attack = this.CreateTransitionTrigger(idle, attack, "attack");
         // 休闲待机 -> 跑
-        let idle_run = new TransitionTrigger(idle, run);
-        // idle_run.setType(TransitionType.Trigger);
-        idle_run.setTriggerFlag("run");
-        idle.addTransition(idle_run);
-
+        let idle_run = this.CreateTransitionTrigger(idle, run, "run");
         // 休闲待机 -> 受击
-        let idle_injure = new TransitionTrigger(idle, injure);
-        // idle_injure.setType(TransitionType.Trigger);
-        idle_injure.setTriggerFlag("injure");
-        idle.addTransition(idle_injure);
-
+        let idle_injure = this.CreateTransitionTrigger(idle, injure, "injure");
         // 休闲待机 -> 死亡
-        let idle_die = new TransitionTrigger(idle, die);
-        // idle_die.setType(TransitionType.Trigger);
-        idle_die.setTriggerFlag("die");
-        idle.addTransition(idle_die);
-
+        let idle_die = this.CreateTransitionTrigger(idle, die, "die");
         // 休闲跑 -> 休闲待机
-        let run_idle = new TransitionTrigger(run, idle);
-        // run_idle.setType(TransitionType.Trigger);
-        run_idle.setTriggerFlag("idle");
-        run.addTransition(run_idle);
-
+        let run_idle = this.CreateTransitionTrigger(run, idle, "idle");
         // 攻击 -> 休闲待机
-        let attack_idle = new TransitionDelay(attack, idle);
-        // attack_idle.setType(TransitionType.Delay);
-        attack_idle.setDelayTime(timeDic.get("attack"));
-        attack.addTransition(attack_idle);
-
+        let attack_idle = this.CreateTransitionDelay(attack, idle, timeDic.get("attack"));
         // 攻击 -> 受击
-        let attack_injure = new TransitionTrigger(attack, injure);
-        // attack_injure.setType(TransitionType.Trigger);
-        attack_injure.setTriggerFlag("injure");
-        attack.addTransition(attack_injure);
-
+        let attack_injure = this.CreateTransitionTrigger(attack, injure, "injure");
         // 受击 -> 休闲待机
-        let injure_idle = new TransitionDelay(injure, idle);
-        // injure_idle.setType(TransitionType.Delay);
-        injure_idle.setDelayTime(timeDic.get("injure") / 0.7);
-        injure.addTransition(injure_idle);
-
+        let injure_idle = this.CreateTransitionDelay(injure, idle, timeDic.get("injure") / 0.7);
         // 受击 -> 受击
-        let injure_injure = new TransitionTrigger(injure, injure);
-        // injure_injure.setType(TransitionType.Trigger);
-        injure_injure.setTriggerFlag("injure");
-        injure.addTransition(injure_injure);
-
+        let injure_injure = this.CreateTransitionTrigger(injure, injure, "injure");
         // 受击 -> 死亡
-        let injure_die = new TransitionTrigger(injure, die);
-        // injure_die.setType(TransitionType.Trigger);
-        injure_die.setTriggerFlag("die");
-        injure.addTransition(injure_die);
+        let injure_die = this.CreateTransitionTrigger(injure, die, "die");
 
         return sm;
+    }
+
+    // 创建触发器转换
+    private CreateTransitionTrigger(fromAction: MachineAction, toAction: MachineAction, triggerFlag: string)
+    {
+        let transition = new TransitionTrigger(fromAction, toAction);
+        transition.setTriggerFlag(triggerFlag);
+        fromAction.addTransition(transition);
+        return transition;
+    }
+
+    // 创建延时转换
+    private CreateTransitionDelay(fromAction: MachineAction, toAction: MachineAction, delayTime: number)
+    {
+        let transition = new TransitionDelay(fromAction, toAction);
+        transition.setDelayTime(delayTime);
+        fromAction.addTransition(transition);
+        return transition;
     }
 }
