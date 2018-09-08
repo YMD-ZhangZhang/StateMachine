@@ -1,5 +1,5 @@
 
-namespace D3Logic
+namespace SmartStateMachine
 {
     /**
      * 状态机转换

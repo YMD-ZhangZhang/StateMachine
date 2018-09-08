@@ -1,5 +1,5 @@
 
-namespace D3Logic
+namespace SmartStateMachine
 {
     /**
      * 一个状态/行为

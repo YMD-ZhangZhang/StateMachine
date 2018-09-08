@@ -1,5 +1,5 @@
 
-namespace D3Logic
+namespace SmartStateMachine
 { 
     /**
      * 状态机，与游戏逻辑有关

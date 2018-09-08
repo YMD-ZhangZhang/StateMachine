@@ -1,5 +1,5 @@
 
-namespace D3Logic
+namespace SmartStateMachine
 {
     /**
      * 转换-延时
