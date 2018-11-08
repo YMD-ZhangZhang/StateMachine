@@ -6,7 +6,7 @@
         "sourceMap": false,
 		"outDir": "bin",
 		"declaration": true,
-		"outFile": "bin/SmartStateMachineLib.js",
+		"outFile": "bin/smartstatemachinelib2.js",
 		"removeComments": true
     },
     "files": [
