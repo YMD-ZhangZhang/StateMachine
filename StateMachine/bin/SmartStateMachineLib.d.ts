@@ -15,6 +15,18 @@ declare namespace SmartStateMachine {
     }
 }
 declare namespace SmartStateMachine {
+    class StateMachine {
+        private _nowAction;
+        private _actionList;
+        createAction(name: string): MachineAction;
+        setAction(nowAction: MachineAction): void;
+        getAction(): MachineAction;
+        setPaused(paused: boolean): void;
+        trigger(triggerName: string, param?: any): void;
+        onDelete(): void;
+    }
+}
+declare namespace SmartStateMachine {
     abstract class MachineActionTransition {
         private _fromAction;
         private _toAction;
@@ -25,18 +37,6 @@ declare namespace SmartStateMachine {
         onTrigger(triggerFlag: string, param: any): void;
         setPaused(paused: boolean): void;
         protected toNext(param: any): void;
-        onDelete(): void;
-    }
-}
-declare namespace SmartStateMachine {
-    class StateMachine {
-        private _nowAction;
-        private _actionList;
-        createAction(name: string): MachineAction;
-        setAction(nowAction: MachineAction): void;
-        getAction(): MachineAction;
-        setPaused(paused: boolean): void;
-        trigger(triggerName: string, param?: any): void;
         onDelete(): void;
     }
 }

@@ -4,16 +4,16 @@
         "removeComments": false,
         "preserveConstEnums": true,
         "sourceMap": false,
-		"outDir": "../bin",
+		"outDir": "bin",
 		"declaration": true,
-		"outFile": "../bin/SmartStateMachineLib.js",
+		"outFile": "bin/SmartStateMachineLib.js",
 		"removeComments": true
     },
     "files": [
-        "MachineAction.ts",
-		"Transition/MachineActionTransition.ts",
-        "StateMachine.ts",
-		"Transition/TransitionDelay.ts",
-		"Transition/TransitionTrigger.ts"
+        "src/MachineAction.ts",
+        "src/StateMachine.ts",
+		"src/Transition/MachineActionTransition.ts",
+		"src/Transition/TransitionDelay.ts",
+		"src/Transition/TransitionTrigger.ts"
     ]
 }

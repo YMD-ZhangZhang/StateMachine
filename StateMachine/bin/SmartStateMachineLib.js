@@ -1,8 +1,13 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var SmartStateMachine;
 (function (SmartStateMachine) {
     var MachineAction = (function () {
@@ -42,28 +47,6 @@ var SmartStateMachine;
 })(SmartStateMachine || (SmartStateMachine = {}));
 var SmartStateMachine;
 (function (SmartStateMachine) {
-    var MachineActionTransition = (function () {
-        function MachineActionTransition(fromAction, toAction) {
-            this._paused = false;
-            this._fromAction = fromAction;
-            this._toAction = toAction;
-        }
-        MachineActionTransition.prototype.onTrigger = function (triggerFlag, param) { };
-        MachineActionTransition.prototype.setPaused = function (paused) {
-            this._paused = paused;
-        };
-        MachineActionTransition.prototype.toNext = function (param) {
-            this._fromAction.exit();
-            this._toAction.enter(param);
-        };
-        MachineActionTransition.prototype.onDelete = function () {
-        };
-        return MachineActionTransition;
-    }());
-    SmartStateMachine.MachineActionTransition = MachineActionTransition;
-})(SmartStateMachine || (SmartStateMachine = {}));
-var SmartStateMachine;
-(function (SmartStateMachine) {
     var StateMachine = (function () {
         function StateMachine() {
             this._actionList = new Array();
@@ -95,14 +78,37 @@ var SmartStateMachine;
 })(SmartStateMachine || (SmartStateMachine = {}));
 var SmartStateMachine;
 (function (SmartStateMachine) {
+    var MachineActionTransition = (function () {
+        function MachineActionTransition(fromAction, toAction) {
+            this._paused = false;
+            this._fromAction = fromAction;
+            this._toAction = toAction;
+        }
+        MachineActionTransition.prototype.onTrigger = function (triggerFlag, param) { };
+        MachineActionTransition.prototype.setPaused = function (paused) {
+            this._paused = paused;
+        };
+        MachineActionTransition.prototype.toNext = function (param) {
+            this._fromAction.exit();
+            this._toAction.enter(param);
+        };
+        MachineActionTransition.prototype.onDelete = function () {
+        };
+        return MachineActionTransition;
+    }());
+    SmartStateMachine.MachineActionTransition = MachineActionTransition;
+})(SmartStateMachine || (SmartStateMachine = {}));
+var SmartStateMachine;
+(function (SmartStateMachine) {
     var TransitionDelay = (function (_super) {
         __extends(TransitionDelay, _super);
         function TransitionDelay(fromAction, toAction, delayLoop, delayStopFunc, delayGetDelta, delayClearFunc) {
-            _super.call(this, fromAction, toAction);
-            this._delayLoop = delayLoop;
-            this._delayStopFunc = delayStopFunc;
-            this._delayGetDelta = delayGetDelta;
-            this._delayClearFunc = delayClearFunc;
+            var _this = _super.call(this, fromAction, toAction) || this;
+            _this._delayLoop = delayLoop;
+            _this._delayStopFunc = delayStopFunc;
+            _this._delayGetDelta = delayGetDelta;
+            _this._delayClearFunc = delayClearFunc;
+            return _this;
         }
         TransitionDelay.prototype.setDelayTime = function (delayTime) {
             this._delayTime = delayTime;
@@ -137,12 +143,13 @@ var SmartStateMachine;
     var TransitionTrigger = (function (_super) {
         __extends(TransitionTrigger, _super);
         function TransitionTrigger(fromAction, toAction, delayBeginFunc, delayStopFunc, delayClearFunc) {
-            _super.call(this, fromAction, toAction);
-            this._triggerProtectTime = 0;
-            this._triggerEndTime = 0;
-            this._delayBeginFunc = delayBeginFunc;
-            this._delayStopFunc = delayStopFunc;
-            this._delayClearFunc = delayClearFunc;
+            var _this = _super.call(this, fromAction, toAction) || this;
+            _this._triggerProtectTime = 0;
+            _this._triggerEndTime = 0;
+            _this._delayBeginFunc = delayBeginFunc;
+            _this._delayStopFunc = delayStopFunc;
+            _this._delayClearFunc = delayClearFunc;
+            return _this;
         }
         TransitionTrigger.prototype.setTriggerFlag = function (triggerFlag) {
             this._triggerFlag = triggerFlag;
