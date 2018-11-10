@@ -102,7 +102,9 @@ namespace SmartStateMachine
         // Override
         onDelete()
         {
-            this._delayClearFunc(this);
+			this._delayStopFunc(this, this.onTriggerProtectTimeOver);
+			this._delayStopFunc(this, this.onTriggerEndTimerOver);
+            //this._delayClearFunc(this);
         }
     }
 }

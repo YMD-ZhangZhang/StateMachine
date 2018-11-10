@@ -132,7 +132,7 @@ var SmartStateMachine;
             this.toNext(null);
         };
         TransitionDelay.prototype.onDelete = function () {
-            this._delayClearFunc(this);
+            this._delayStopFunc(this, this.delayUpdate);
         };
         return TransitionDelay;
     }(SmartStateMachine.MachineActionTransition));
@@ -189,7 +189,8 @@ var SmartStateMachine;
             this._triggerProtecting = true;
         };
         TransitionTrigger.prototype.onDelete = function () {
-            this._delayClearFunc(this);
+            this._delayStopFunc(this, this.onTriggerProtectTimeOver);
+            this._delayStopFunc(this, this.onTriggerEndTimerOver);
         };
         return TransitionTrigger;
     }(SmartStateMachine.MachineActionTransition));
