@@ -18,11 +18,14 @@ declare namespace SmartStateMachine {
     class StateMachine {
         private _nowAction;
         private _actionList;
+        private _forceActionList;
         createAction(name: string): MachineAction;
+        addForceAction(action: MachineAction): void;
         setAction(nowAction: MachineAction): void;
         getAction(): MachineAction;
         setPaused(paused: boolean): void;
         trigger(triggerName: string, param?: any): void;
+        enterForceAction(name: string): void;
         onDelete(): void;
     }
 }

@@ -50,11 +50,15 @@ var SmartStateMachine;
     var StateMachine = (function () {
         function StateMachine() {
             this._actionList = new Array();
+            this._forceActionList = new Array();
         }
         StateMachine.prototype.createAction = function (name) {
             var action = new SmartStateMachine.MachineAction(name, this);
             this._actionList.push(action);
             return action;
+        };
+        StateMachine.prototype.addForceAction = function (action) {
+            this._forceActionList.push(action);
         };
         StateMachine.prototype.setAction = function (nowAction) {
             this._nowAction = nowAction;
@@ -68,6 +72,13 @@ var SmartStateMachine;
         StateMachine.prototype.trigger = function (triggerName, param) {
             if (param === void 0) { param = null; }
             this._nowAction.trigger(triggerName, param);
+        };
+        StateMachine.prototype.enterForceAction = function (name) {
+            var forces = this._forceActionList.filter(function (action) { return action.getName() == name; });
+            if (forces.length > 0) {
+                this._nowAction.exit();
+                forces[0].enter(null);
+            }
         };
         StateMachine.prototype.onDelete = function () {
             this._actionList.forEach(function (x) { return x.onDelete(); });
