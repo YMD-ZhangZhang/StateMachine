@@ -7,7 +7,7 @@ namespace SmartStateMachine
     export class StateMachine
     {
         private _nowAction: MachineAction;
-        private _actionList: Array<MachineAction> = new Array<MachineAction>();
+        private _actionList = new Array<MachineAction>();
         private _forceActionList = new Array<MachineAction>();
 
         public createAction(name: string) : MachineAction
@@ -59,7 +59,19 @@ namespace SmartStateMachine
 
         onDelete()
         {
-            this._actionList.forEach(x => x.onDelete());
+            if (this._actionList)
+            {
+                this._actionList.forEach(x => x.onDelete());
+                this._actionList = null;
+            }
+
+            if (this._forceActionList)
+            {
+                this._forceActionList.forEach(x => x.onDelete());
+                this._forceActionList = null;
+            }
+
+            this._nowAction = null;
         }
     }
 }

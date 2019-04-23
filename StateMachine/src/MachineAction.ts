@@ -76,7 +76,14 @@ namespace SmartStateMachine
 
         onDelete()
         {
-            this._transitionList.forEach(x => x.onDelete());
+            if (this._transitionList)
+            {
+                this._transitionList.forEach(x => x.onDelete());
+                this._transitionList = null;
+            }
+            
+            this.funcOnEnter = null;
+            this._stateMachine = null;
         }
     }
 }

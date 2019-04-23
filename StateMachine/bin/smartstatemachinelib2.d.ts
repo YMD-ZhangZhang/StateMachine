@@ -55,8 +55,8 @@ declare namespace SmartStateMachine {
         setDelayTime(delayTime: number): void;
         onEnable(): void;
         onDisable(): void;
-        private delayUpdate();
-        private onDelayOver();
+        private delayUpdate;
+        private onDelayOver;
         onDelete(): void;
     }
 }
@@ -76,8 +76,8 @@ declare namespace SmartStateMachine {
         onEnable(): void;
         onDisable(): void;
         onTrigger(triggerFlag: string, param: any): void;
-        private onTriggerProtectTimeOver();
-        private onTriggerEndTimerOver();
+        private onTriggerProtectTimeOver;
+        private onTriggerEndTimerOver;
         onDelete(): void;
     }
 }

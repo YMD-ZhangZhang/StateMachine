@@ -103,7 +103,8 @@ namespace SmartStateMachine
         onDelete()
         {
 			this._delayStopFunc(this, this.onTriggerProtectTimeOver);
-			this._delayStopFunc(this, this.onTriggerEndTimerOver);
+            this._delayStopFunc(this, this.onTriggerEndTimerOver);
+            super.onDelete();
             //this._delayClearFunc(this);
         }
     }

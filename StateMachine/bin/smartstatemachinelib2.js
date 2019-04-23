@@ -1,7 +1,10 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -39,7 +42,12 @@ var SmartStateMachine;
             this._transitionList.forEach(function (x) { return x.setPaused(paused); });
         };
         MachineAction.prototype.onDelete = function () {
-            this._transitionList.forEach(function (x) { return x.onDelete(); });
+            if (this._transitionList) {
+                this._transitionList.forEach(function (x) { return x.onDelete(); });
+                this._transitionList = null;
+            }
+            this.funcOnEnter = null;
+            this._stateMachine = null;
         };
         return MachineAction;
     }());
@@ -81,7 +89,15 @@ var SmartStateMachine;
             }
         };
         StateMachine.prototype.onDelete = function () {
-            this._actionList.forEach(function (x) { return x.onDelete(); });
+            if (this._actionList) {
+                this._actionList.forEach(function (x) { return x.onDelete(); });
+                this._actionList = null;
+            }
+            if (this._forceActionList) {
+                this._forceActionList.forEach(function (x) { return x.onDelete(); });
+                this._forceActionList = null;
+            }
+            this._nowAction = null;
         };
         return StateMachine;
     }());
@@ -104,6 +120,8 @@ var SmartStateMachine;
             this._toAction.enter(param);
         };
         MachineActionTransition.prototype.onDelete = function () {
+            this._fromAction = null;
+            this._toAction = null;
         };
         return MachineActionTransition;
     }());
@@ -144,6 +162,7 @@ var SmartStateMachine;
         };
         TransitionDelay.prototype.onDelete = function () {
             this._delayStopFunc(this, this.delayUpdate);
+            _super.prototype.onDelete.call(this);
         };
         return TransitionDelay;
     }(SmartStateMachine.MachineActionTransition));
@@ -202,6 +221,7 @@ var SmartStateMachine;
         TransitionTrigger.prototype.onDelete = function () {
             this._delayStopFunc(this, this.onTriggerProtectTimeOver);
             this._delayStopFunc(this, this.onTriggerEndTimerOver);
+            _super.prototype.onDelete.call(this);
         };
         return TransitionTrigger;
     }(SmartStateMachine.MachineActionTransition));

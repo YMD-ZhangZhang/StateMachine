@@ -48,6 +48,8 @@ namespace SmartStateMachine
 
         onDelete()
         {
+            this._fromAction = null;
+            this._toAction = null;
         }
     }
 }
