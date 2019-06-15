@@ -54,7 +54,7 @@ declare namespace SmartStateMachine {
         setDelayTime(delayTime: number): void;
         onEnable(): void;
         onDisable(): void;
-        private delayUpdate;
+        private onUpdate;
         private onDelayOver;
         onDelete(): void;
     }
@@ -65,14 +65,18 @@ declare namespace SmartStateMachine {
         private _triggerProtectTime;
         private _triggerEndTime;
         private _triggerProtecting;
-        private _once;
+        private _nowTriggerProtectTime;
+        private _nowTriggerEndTime;
         private _clear;
-        constructor(fromAction: any, toAction: any, once: Function, clear: Function);
+        private _frameLoop;
+        private _delta;
+        constructor(fromAction: any, toAction: any, frameLoop: Function, clear: Function, delta: Function);
         setTriggerFlag(triggerFlag: string): void;
         setTriggerProtectTime(time: number): TransitionTrigger;
         setTriggerEndTime(time: number): TransitionTrigger;
         onEnable(): void;
         onDisable(): void;
+        private onUpdate;
         onTrigger(triggerFlag: string, param: any): void;
         private onTriggerProtectTimeOver;
         private onTriggerEndTimerOver;

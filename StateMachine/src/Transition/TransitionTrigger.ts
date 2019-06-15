@@ -11,14 +11,19 @@ namespace SmartStateMachine
         private _triggerEndTime: number = 0;// 触发器结束时间(结束后触发器无效)
         private _triggerProtecting: boolean;// 触发保护生效中
 
-        private _once: Function;
-        private _clear: Function;
+        private _nowTriggerProtectTime = 0;
+        private _nowTriggerEndTime = 0;
 
-        constructor(fromAction, toAction, once: Function, clear: Function)
+        private _clear: Function;
+        private _frameLoop: Function;
+        private _delta: Function;
+
+        constructor(fromAction, toAction, frameLoop: Function, clear: Function, delta: Function)
         {
             super(fromAction, toAction);
-            this._once = once;
+            this._frameLoop = frameLoop;
             this._clear = clear;
+            this._delta = delta;
         }
 
         /**
@@ -52,14 +57,18 @@ namespace SmartStateMachine
          */
         public onEnable()
         {
+            this._frameLoop(1, this, this.onUpdate);
+
+            // 如果需要保护时间
             if (this._triggerProtectTime > 0)
             {
                 this._triggerProtecting = true;
-                this._once(this._triggerProtectTime, this, this.onTriggerProtectTimeOver)
+                this._nowTriggerProtectTime = this._triggerProtectTime;
 
+                // 如果有保护结束时间
                 if (this._triggerEndTime > 0)
                 {
-                    this._once(this._triggerEndTime, this, this.onTriggerEndTimerOver)
+                    this._nowTriggerEndTime = this._triggerEndTime;
                 }
             }
             else
@@ -73,7 +82,33 @@ namespace SmartStateMachine
          */
         public onDisable()
         {
-            this._clear(this, this.onTriggerProtectTimeOver);
+            this._clear(this, this.onUpdate);
+        }
+
+        private onUpdate()
+        {
+            if (this._paused)
+                return;
+
+            // 减少ProtectTime
+            if (this._nowTriggerProtectTime > 0)
+            {
+                this._nowTriggerProtectTime -= this._delta();
+                if (this._nowTriggerProtectTime <= 0)
+                {
+                    this.onTriggerProtectTimeOver();
+                }
+            }
+
+            // 减少EndTime
+            if (this._nowTriggerEndTime > 0)
+            {
+                this._nowTriggerEndTime -= this._delta();
+                if (this._nowTriggerEndTime <= 0)
+                {
+                    this.onTriggerEndTimerOver();
+                }
+            }
         }
 
         /**

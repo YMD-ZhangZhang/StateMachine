@@ -143,12 +143,12 @@ var SmartStateMachine;
         };
         TransitionDelay.prototype.onEnable = function () {
             this._nowDelayTime = 0;
-            this._frameLoop(1, this, this.delayUpdate);
+            this._frameLoop(1, this, this.onUpdate);
         };
         TransitionDelay.prototype.onDisable = function () {
-            this._clear(this, this.delayUpdate);
+            this._clear(this, this.onUpdate);
         };
-        TransitionDelay.prototype.delayUpdate = function () {
+        TransitionDelay.prototype.onUpdate = function () {
             if (this._paused)
                 return;
             this._nowDelayTime += this._delta();
@@ -160,7 +160,7 @@ var SmartStateMachine;
             this.toNext(null);
         };
         TransitionDelay.prototype.onDelete = function () {
-            this._clear(this, this.delayUpdate);
+            this._clear(this, this.onUpdate);
             _super.prototype.onDelete.call(this);
         };
         return TransitionDelay;
@@ -171,12 +171,15 @@ var SmartStateMachine;
 (function (SmartStateMachine) {
     var TransitionTrigger = (function (_super) {
         __extends(TransitionTrigger, _super);
-        function TransitionTrigger(fromAction, toAction, once, clear) {
+        function TransitionTrigger(fromAction, toAction, frameLoop, clear, delta) {
             var _this = _super.call(this, fromAction, toAction) || this;
             _this._triggerProtectTime = 0;
             _this._triggerEndTime = 0;
-            _this._once = once;
+            _this._nowTriggerProtectTime = 0;
+            _this._nowTriggerEndTime = 0;
+            _this._frameLoop = frameLoop;
             _this._clear = clear;
+            _this._delta = delta;
             return _this;
         }
         TransitionTrigger.prototype.setTriggerFlag = function (triggerFlag) {
@@ -191,11 +194,12 @@ var SmartStateMachine;
             return this;
         };
         TransitionTrigger.prototype.onEnable = function () {
+            this._frameLoop(1, this, this.onUpdate);
             if (this._triggerProtectTime > 0) {
                 this._triggerProtecting = true;
-                this._once(this._triggerProtectTime, this, this.onTriggerProtectTimeOver);
+                this._nowTriggerProtectTime = this._triggerProtectTime;
                 if (this._triggerEndTime > 0) {
-                    this._once(this._triggerEndTime, this, this.onTriggerEndTimerOver);
+                    this._nowTriggerEndTime = this._triggerEndTime;
                 }
             }
             else {
@@ -203,7 +207,23 @@ var SmartStateMachine;
             }
         };
         TransitionTrigger.prototype.onDisable = function () {
-            this._clear(this, this.onTriggerProtectTimeOver);
+            this._clear(this, this.onUpdate);
+        };
+        TransitionTrigger.prototype.onUpdate = function () {
+            if (this._paused)
+                return;
+            if (this._nowTriggerProtectTime > 0) {
+                this._nowTriggerProtectTime -= this._delta();
+                if (this._nowTriggerProtectTime <= 0) {
+                    this.onTriggerProtectTimeOver();
+                }
+            }
+            if (this._nowTriggerEndTime > 0) {
+                this._nowTriggerEndTime -= this._delta();
+                if (this._nowTriggerEndTime <= 0) {
+                    this.onTriggerEndTimerOver();
+                }
+            }
         };
         TransitionTrigger.prototype.onTrigger = function (triggerFlag, param) {
             if (this._triggerFlag == triggerFlag && !this._triggerProtecting) {

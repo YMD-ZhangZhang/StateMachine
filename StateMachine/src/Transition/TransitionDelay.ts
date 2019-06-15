@@ -36,7 +36,7 @@ namespace SmartStateMachine
         public onEnable()
         {
             this._nowDelayTime = 0;
-            this._frameLoop(1, this, this.delayUpdate);
+            this._frameLoop(1, this, this.onUpdate);
         }
 
         /**
@@ -44,10 +44,10 @@ namespace SmartStateMachine
          */
         public onDisable()
         {
-            this._clear(this, this.delayUpdate);
+            this._clear(this, this.onUpdate);
         }
 
-        private delayUpdate()
+        private onUpdate()
         {
             if (this._paused)
                 return;
@@ -66,7 +66,7 @@ namespace SmartStateMachine
 
         onDelete()
         {
-            this._clear(this, this.delayUpdate);
+            this._clear(this, this.onUpdate);
             super.onDelete();
             //this._delayClearFunc(this);
         }
