@@ -11,16 +11,14 @@ namespace SmartStateMachine
         private _triggerEndTime: number = 0;// 触发器结束时间(结束后触发器无效)
         private _triggerProtecting: boolean;// 触发保护生效中
 
-        private _delayBeginFunc: Function;
-        private _delayStopFunc: Function;
-        private _delayClearFunc: Function;
+        private _once: Function;
+        private _clear: Function;
 
-        constructor(fromAction, toAction, delayBeginFunc: Function, delayStopFunc: Function, delayClearFunc: Function)
+        constructor(fromAction, toAction, once: Function, clear: Function)
         {
             super(fromAction, toAction);
-            this._delayBeginFunc = delayBeginFunc;
-            this._delayStopFunc = delayStopFunc;
-            this._delayClearFunc = delayClearFunc;
+            this._once = once;
+            this._clear = clear;
         }
 
         /**
@@ -57,11 +55,11 @@ namespace SmartStateMachine
             if (this._triggerProtectTime > 0)
             {
                 this._triggerProtecting = true;
-                this._delayBeginFunc(this._triggerProtectTime, this, this.onTriggerProtectTimeOver)
+                this._once(this._triggerProtectTime, this, this.onTriggerProtectTimeOver)
 
                 if (this._triggerEndTime > 0)
                 {
-                    this._delayBeginFunc(this._triggerEndTime, this, this.onTriggerEndTimerOver)
+                    this._once(this._triggerEndTime, this, this.onTriggerEndTimerOver)
                 }
             }
             else
@@ -75,7 +73,7 @@ namespace SmartStateMachine
          */
         public onDisable()
         {
-            this._delayStopFunc(this, this.onTriggerProtectTimeOver);
+            this._clear(this, this.onTriggerProtectTimeOver);
         }
 
         /**
@@ -102,10 +100,9 @@ namespace SmartStateMachine
         // Override
         onDelete()
         {
-			this._delayStopFunc(this, this.onTriggerProtectTimeOver);
-            this._delayStopFunc(this, this.onTriggerEndTimerOver);
+			this._clear(this, this.onTriggerProtectTimeOver);
+            this._clear(this, this.onTriggerEndTimerOver);
             super.onDelete();
-            //this._delayClearFunc(this);
         }
     }
 }

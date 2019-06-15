@@ -131,12 +131,11 @@ var SmartStateMachine;
 (function (SmartStateMachine) {
     var TransitionDelay = (function (_super) {
         __extends(TransitionDelay, _super);
-        function TransitionDelay(fromAction, toAction, delayLoop, delayStopFunc, delayGetDelta, delayClearFunc) {
+        function TransitionDelay(fromAction, toAction, frameLoop, clear, delta) {
             var _this = _super.call(this, fromAction, toAction) || this;
-            _this._delayLoop = delayLoop;
-            _this._delayStopFunc = delayStopFunc;
-            _this._delayGetDelta = delayGetDelta;
-            _this._delayClearFunc = delayClearFunc;
+            _this._frameLoop = frameLoop;
+            _this._clear = clear;
+            _this._delta = delta;
             return _this;
         }
         TransitionDelay.prototype.setDelayTime = function (delayTime) {
@@ -144,15 +143,15 @@ var SmartStateMachine;
         };
         TransitionDelay.prototype.onEnable = function () {
             this._nowDelayTime = 0;
-            this._delayLoop(1, this, this.delayUpdate);
+            this._frameLoop(1, this, this.delayUpdate);
         };
         TransitionDelay.prototype.onDisable = function () {
-            this._delayStopFunc(this, this.delayUpdate);
+            this._clear(this, this.delayUpdate);
         };
         TransitionDelay.prototype.delayUpdate = function () {
             if (this._paused)
                 return;
-            this._nowDelayTime += this._delayGetDelta();
+            this._nowDelayTime += this._delta();
             if (this._nowDelayTime >= this._delayTime) {
                 this.onDelayOver();
             }
@@ -161,7 +160,7 @@ var SmartStateMachine;
             this.toNext(null);
         };
         TransitionDelay.prototype.onDelete = function () {
-            this._delayStopFunc(this, this.delayUpdate);
+            this._clear(this, this.delayUpdate);
             _super.prototype.onDelete.call(this);
         };
         return TransitionDelay;
@@ -172,13 +171,12 @@ var SmartStateMachine;
 (function (SmartStateMachine) {
     var TransitionTrigger = (function (_super) {
         __extends(TransitionTrigger, _super);
-        function TransitionTrigger(fromAction, toAction, delayBeginFunc, delayStopFunc, delayClearFunc) {
+        function TransitionTrigger(fromAction, toAction, once, clear) {
             var _this = _super.call(this, fromAction, toAction) || this;
             _this._triggerProtectTime = 0;
             _this._triggerEndTime = 0;
-            _this._delayBeginFunc = delayBeginFunc;
-            _this._delayStopFunc = delayStopFunc;
-            _this._delayClearFunc = delayClearFunc;
+            _this._once = once;
+            _this._clear = clear;
             return _this;
         }
         TransitionTrigger.prototype.setTriggerFlag = function (triggerFlag) {
@@ -195,9 +193,9 @@ var SmartStateMachine;
         TransitionTrigger.prototype.onEnable = function () {
             if (this._triggerProtectTime > 0) {
                 this._triggerProtecting = true;
-                this._delayBeginFunc(this._triggerProtectTime, this, this.onTriggerProtectTimeOver);
+                this._once(this._triggerProtectTime, this, this.onTriggerProtectTimeOver);
                 if (this._triggerEndTime > 0) {
-                    this._delayBeginFunc(this._triggerEndTime, this, this.onTriggerEndTimerOver);
+                    this._once(this._triggerEndTime, this, this.onTriggerEndTimerOver);
                 }
             }
             else {
@@ -205,7 +203,7 @@ var SmartStateMachine;
             }
         };
         TransitionTrigger.prototype.onDisable = function () {
-            this._delayStopFunc(this, this.onTriggerProtectTimeOver);
+            this._clear(this, this.onTriggerProtectTimeOver);
         };
         TransitionTrigger.prototype.onTrigger = function (triggerFlag, param) {
             if (this._triggerFlag == triggerFlag && !this._triggerProtecting) {
@@ -219,8 +217,8 @@ var SmartStateMachine;
             this._triggerProtecting = true;
         };
         TransitionTrigger.prototype.onDelete = function () {
-            this._delayStopFunc(this, this.onTriggerProtectTimeOver);
-            this._delayStopFunc(this, this.onTriggerEndTimerOver);
+            this._clear(this, this.onTriggerProtectTimeOver);
+            this._clear(this, this.onTriggerEndTimerOver);
             _super.prototype.onDelete.call(this);
         };
         return TransitionTrigger;

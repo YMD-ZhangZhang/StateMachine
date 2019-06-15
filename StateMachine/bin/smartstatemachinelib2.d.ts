@@ -47,11 +47,10 @@ declare namespace SmartStateMachine {
     class TransitionDelay extends MachineActionTransition {
         private _delayTime;
         private _nowDelayTime;
-        private _delayLoop;
-        private _delayStopFunc;
-        private _delayGetDelta;
-        private _delayClearFunc;
-        constructor(fromAction: any, toAction: any, delayLoop: Function, delayStopFunc: Function, delayGetDelta: Function, delayClearFunc: Function);
+        private _frameLoop;
+        private _clear;
+        private _delta;
+        constructor(fromAction: any, toAction: any, frameLoop: Function, clear: Function, delta: Function);
         setDelayTime(delayTime: number): void;
         onEnable(): void;
         onDisable(): void;
@@ -66,10 +65,9 @@ declare namespace SmartStateMachine {
         private _triggerProtectTime;
         private _triggerEndTime;
         private _triggerProtecting;
-        private _delayBeginFunc;
-        private _delayStopFunc;
-        private _delayClearFunc;
-        constructor(fromAction: any, toAction: any, delayBeginFunc: Function, delayStopFunc: Function, delayClearFunc: Function);
+        private _once;
+        private _clear;
+        constructor(fromAction: any, toAction: any, once: Function, clear: Function);
         setTriggerFlag(triggerFlag: string): void;
         setTriggerProtectTime(time: number): TransitionTrigger;
         setTriggerEndTime(time: number): TransitionTrigger;

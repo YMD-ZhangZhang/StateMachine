@@ -9,19 +9,17 @@ namespace SmartStateMachine
         private _delayTime: number;
         private _nowDelayTime: number;
 
-        private _delayLoop: Function;
-        private _delayStopFunc: Function;
-        private _delayGetDelta: Function;
-        private _delayClearFunc: Function;
+        private _frameLoop: Function;
+        private _clear: Function;
+        private _delta: Function;
 
-        constructor(fromAction, toAction, delayLoop: Function, delayStopFunc: Function, delayGetDelta: Function, delayClearFunc: Function)
+        constructor(fromAction, toAction, frameLoop: Function, clear: Function, delta: Function)
         {
             super(fromAction, toAction);
 
-            this._delayLoop = delayLoop;
-            this._delayStopFunc = delayStopFunc;
-            this._delayGetDelta = delayGetDelta;
-            this._delayClearFunc = delayClearFunc;
+            this._frameLoop = frameLoop;
+            this._clear = clear;
+            this._delta = delta;
         }
 
         /**
@@ -38,7 +36,7 @@ namespace SmartStateMachine
         public onEnable()
         {
             this._nowDelayTime = 0;
-            this._delayLoop(1, this, this.delayUpdate);
+            this._frameLoop(1, this, this.delayUpdate);
         }
 
         /**
@@ -46,7 +44,7 @@ namespace SmartStateMachine
          */
         public onDisable()
         {
-            this._delayStopFunc(this, this.delayUpdate);
+            this._clear(this, this.delayUpdate);
         }
 
         private delayUpdate()
@@ -54,7 +52,7 @@ namespace SmartStateMachine
             if (this._paused)
                 return;
                 
-            this._nowDelayTime += this._delayGetDelta();
+            this._nowDelayTime += this._delta();
             if (this._nowDelayTime >= this._delayTime)
             {
                 this.onDelayOver();
@@ -68,7 +66,7 @@ namespace SmartStateMachine
 
         onDelete()
         {
-            this._delayStopFunc(this, this.delayUpdate);
+            this._clear(this, this.delayUpdate);
             super.onDelete();
             //this._delayClearFunc(this);
         }
