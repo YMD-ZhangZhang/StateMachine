@@ -6,6 +6,7 @@ namespace SmartStateMachine
      */
     export class TransitionDelay extends MachineActionTransition
     {
+        private _canUpdate: boolean;
         private _delayTime: number;
         private _nowDelayTime: number;
 
@@ -20,6 +21,9 @@ namespace SmartStateMachine
             this._frameLoop = frameLoop;
             this._clear = clear;
             this._delta = delta;
+
+            this._canUpdate = false;
+            this._frameLoop(1, this, this.onUpdate);
         }
 
         /**
@@ -36,7 +40,7 @@ namespace SmartStateMachine
         public onEnable()
         {
             this._nowDelayTime = 0;
-            this._frameLoop(1, this, this.onUpdate);
+            this._canUpdate = true;
         }
 
         /**
@@ -44,12 +48,12 @@ namespace SmartStateMachine
          */
         public onDisable()
         {
-            this._clear(this, this.onUpdate);
+            this._canUpdate = false;
         }
 
         private onUpdate()
         {
-            if (this._paused)
+            if (this._paused || !this._canUpdate)
                 return;
                 
             this._nowDelayTime += this._delta();

@@ -45,6 +45,7 @@ declare namespace SmartStateMachine {
 }
 declare namespace SmartStateMachine {
     class TransitionDelay extends MachineActionTransition {
+        private _canUpdate;
         private _delayTime;
         private _nowDelayTime;
         private _frameLoop;
@@ -65,6 +66,7 @@ declare namespace SmartStateMachine {
         private _triggerProtectTime;
         private _triggerEndTime;
         private _triggerProtecting;
+        private _canUpdate;
         private _nowTriggerProtectTime;
         private _nowTriggerEndTime;
         private _clear;

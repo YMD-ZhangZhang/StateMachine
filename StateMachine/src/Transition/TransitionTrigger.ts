@@ -11,6 +11,7 @@ namespace SmartStateMachine
         private _triggerEndTime: number = 0;// 触发器结束时间(结束后触发器无效)
         private _triggerProtecting: boolean;// 触发保护生效中
 
+        private _canUpdate: boolean;
         private _nowTriggerProtectTime = 0;
         private _nowTriggerEndTime = 0;
 
@@ -21,9 +22,13 @@ namespace SmartStateMachine
         constructor(fromAction, toAction, frameLoop: Function, clear: Function, delta: Function)
         {
             super(fromAction, toAction);
+
             this._frameLoop = frameLoop;
             this._clear = clear;
             this._delta = delta;
+
+            this._canUpdate = false;
+            this._frameLoop(1, this, this.onUpdate);
         }
 
         /**
@@ -57,7 +62,7 @@ namespace SmartStateMachine
          */
         public onEnable()
         {
-            this._frameLoop(1, this, this.onUpdate);
+            this._canUpdate = true;
 
             // 如果需要保护时间
             if (this._triggerProtectTime > 0)
@@ -82,12 +87,12 @@ namespace SmartStateMachine
          */
         public onDisable()
         {
-            this._clear(this, this.onUpdate);
+            this._canUpdate = false;
         }
 
         private onUpdate()
         {
-            if (this._paused)
+            if (this._paused || !this._canUpdate)
                 return;
 
             // 减少ProtectTime
@@ -135,6 +140,7 @@ namespace SmartStateMachine
         // Override
         onDelete()
         {
+            this._clear(this, this.onUpdate);
 			this._clear(this, this.onTriggerProtectTimeOver);
             this._clear(this, this.onTriggerEndTimerOver);
             super.onDelete();
