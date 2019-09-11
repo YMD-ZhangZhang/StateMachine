@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "sourceMap": false,
+		"outDir": "bin",
+		"declaration": true,
+		"outFile": "bin/smartstatemachinelib3.js",
+		"removeComments": true
+    },
+    "files": [
+        "src/MachineAction.ts",
+        "src/StateMachine.ts",
+		"src/Transition/MachineActionTransition.ts",
+		"src/Transition/TransitionDelay.ts",
+		"src/Transition/TransitionTrigger.ts"
+    ]
+}
