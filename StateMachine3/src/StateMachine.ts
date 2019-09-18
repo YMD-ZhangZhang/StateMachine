@@ -10,9 +10,20 @@ namespace SmartStateMachine
         private _actionList = new Array<MachineAction>();
         private _forceActionList = new Array<MachineAction>();
 
+        private _clear: Function;
+        private _frameLoop: Function;
+        private _delta: Function;
+
+        constructor(frameLoop: Function, clear: Function, delta: Function)
+        {
+            this._frameLoop = frameLoop;
+            this._clear = clear;
+            this._delta = delta;
+        }
+
         public createAction(name: string) : MachineAction
         {
-            let action = new MachineAction(name, this);
+            let action = new MachineAction(name, this, this._frameLoop, this._clear, this._delta);
             this._actionList.push(action);
             return action;
         }
@@ -31,6 +42,17 @@ namespace SmartStateMachine
         public getAction() : MachineAction
         {
             return this._nowAction;
+        }
+
+        public getSpecifiedAction(name: string) : MachineAction
+        {
+            for (let i = 0; i < this._actionList.length; i++)
+            {
+                let action = this._actionList[i];
+                if (action.getName() == name)
+                    return action;
+            }
+            return null;
         }
 
         /**

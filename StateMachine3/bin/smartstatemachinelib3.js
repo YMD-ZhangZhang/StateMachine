@@ -14,11 +14,38 @@ var __extends = (this && this.__extends) || (function () {
 var SmartStateMachine;
 (function (SmartStateMachine) {
     var MachineAction = (function () {
-        function MachineAction(name, stateMachine) {
+        function MachineAction(name, stateMachine, frameLoop, clear, delta) {
+            this._runningTime = 0;
             this._name = name;
             this._stateMachine = stateMachine;
             this._transitionList = new Array();
+            this._eventList = new Array();
+            this._frameLoop = frameLoop;
+            this._clear = clear;
+            this._delta = delta;
+            this._frameLoop(1, this, this.onUpdate);
         }
+        MachineAction.prototype.addEvent = function (e) {
+            this._eventList.push(e);
+        };
+        MachineAction.prototype.onUpdate = function () {
+            if (!this._canUpdate)
+                return;
+            this._runningTime += this._delta();
+            this.tryTriggerEvent();
+        };
+        MachineAction.prototype.tryTriggerEvent = function () {
+            var _this = this;
+            this._eventList.forEach(function (e) {
+                if (e.getStatus() == SmartStateMachine.EventStatus.NO_TRIGGER) {
+                    if (e.getStartTime() <= _this._runningTime) {
+                        e.setStatus(SmartStateMachine.EventStatus.TRIGGER_ED);
+                        if (_this.onAttackEvent)
+                            _this.onAttackEvent(e, _this._saveParam);
+                    }
+                }
+            });
+        };
         MachineAction.prototype.getName = function () {
             return this._name;
         };
@@ -26,13 +53,20 @@ var SmartStateMachine;
             this._transitionList.push(transition);
         };
         MachineAction.prototype.enter = function (param) {
+            this._saveParam = param;
             this._stateMachine.setAction(this);
             if (this.funcOnEnter)
-                this.funcOnEnter(param);
+                this.funcOnEnter(this._saveParam);
             this._transitionList.forEach(function (x) { return x.onEnable(); });
+            this.resetAllEventStatus();
+            this._canUpdate = true;
+        };
+        MachineAction.prototype.resetAllEventStatus = function () {
+            this._eventList.forEach(function (x) { return x.setStatus(SmartStateMachine.EventStatus.NO_TRIGGER); });
         };
         MachineAction.prototype.exit = function () {
             this._transitionList.forEach(function (x) { return x.onDisable(); });
+            this._canUpdate = false;
         };
         MachineAction.prototype.trigger = function (triggerFlag, param) {
             if (param === void 0) { param = null; }
@@ -46,6 +80,7 @@ var SmartStateMachine;
                 this._transitionList.forEach(function (x) { return x.onDelete(); });
                 this._transitionList = null;
             }
+            this._clear(this, this.onUpdate);
             this.funcOnEnter = null;
             this._stateMachine = null;
         };
@@ -56,12 +91,15 @@ var SmartStateMachine;
 var SmartStateMachine;
 (function (SmartStateMachine) {
     var StateMachine = (function () {
-        function StateMachine() {
+        function StateMachine(frameLoop, clear, delta) {
             this._actionList = new Array();
             this._forceActionList = new Array();
+            this._frameLoop = frameLoop;
+            this._clear = clear;
+            this._delta = delta;
         }
         StateMachine.prototype.createAction = function (name) {
-            var action = new SmartStateMachine.MachineAction(name, this);
+            var action = new SmartStateMachine.MachineAction(name, this, this._frameLoop, this._clear, this._delta);
             this._actionList.push(action);
             return action;
         };
@@ -73,6 +111,14 @@ var SmartStateMachine;
         };
         StateMachine.prototype.getAction = function () {
             return this._nowAction;
+        };
+        StateMachine.prototype.getSpecifiedAction = function (name) {
+            for (var i = 0; i < this._actionList.length; i++) {
+                var action = this._actionList[i];
+                if (action.getName() == name)
+                    return action;
+            }
+            return null;
         };
         StateMachine.prototype.setPaused = function (paused) {
             this._nowAction.setPaused(paused);
@@ -102,6 +148,42 @@ var SmartStateMachine;
         return StateMachine;
     }());
     SmartStateMachine.StateMachine = StateMachine;
+})(SmartStateMachine || (SmartStateMachine = {}));
+var SmartStateMachine;
+(function (SmartStateMachine) {
+    var EventStatus;
+    (function (EventStatus) {
+        EventStatus[EventStatus["NO_TRIGGER"] = 0] = "NO_TRIGGER";
+        EventStatus[EventStatus["TRIGGER_ED"] = 1] = "TRIGGER_ED";
+    })(EventStatus = SmartStateMachine.EventStatus || (SmartStateMachine.EventStatus = {}));
+    var BaseEvent = (function () {
+        function BaseEvent(id, startTime) {
+            this._status = EventStatus.NO_TRIGGER;
+            this._id = id;
+            this._startTime = startTime;
+        }
+        BaseEvent.prototype.getID = function () { return this._id; };
+        BaseEvent.prototype.getStartTime = function () { return this._startTime; };
+        BaseEvent.prototype.setStatus = function (status) {
+            this._status = status;
+        };
+        BaseEvent.prototype.getStatus = function () {
+            return this._status;
+        };
+        return BaseEvent;
+    }());
+    SmartStateMachine.BaseEvent = BaseEvent;
+})(SmartStateMachine || (SmartStateMachine = {}));
+var SmartStateMachine;
+(function (SmartStateMachine) {
+    var AttackEvent = (function (_super) {
+        __extends(AttackEvent, _super);
+        function AttackEvent(id, startTime) {
+            return _super.call(this, id, startTime) || this;
+        }
+        return AttackEvent;
+    }(SmartStateMachine.BaseEvent));
+    SmartStateMachine.AttackEvent = AttackEvent;
 })(SmartStateMachine || (SmartStateMachine = {}));
 var SmartStateMachine;
 (function (SmartStateMachine) {

@@ -12,6 +12,8 @@
     "files": [
         "src/MachineAction.ts",
         "src/StateMachine.ts",
+        "src/Event/BaseEvent.ts",
+        "src/Event/AttackEvent.ts",
 		"src/Transition/MachineActionTransition.ts",
 		"src/Transition/TransitionDelay.ts",
 		"src/Transition/TransitionTrigger.ts"

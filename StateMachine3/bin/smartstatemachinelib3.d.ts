@@ -1,13 +1,25 @@
 declare namespace SmartStateMachine {
     class MachineAction {
         funcOnEnter: Function;
+        onAttackEvent: Function;
+        private _saveParam;
         private _name;
         private _stateMachine;
         private _transitionList;
-        constructor(name: string, stateMachine: StateMachine);
+        private _eventList;
+        private _canUpdate;
+        private _clear;
+        private _frameLoop;
+        private _delta;
+        private _runningTime;
+        constructor(name: string, stateMachine: StateMachine, frameLoop: Function, clear: Function, delta: Function);
+        addEvent(e: BaseEvent): void;
+        private onUpdate;
+        private tryTriggerEvent;
         getName(): string;
         addTransition(transition: MachineActionTransition): void;
         enter(param: any): void;
+        private resetAllEventStatus;
         exit(): void;
         trigger(triggerFlag: string, param?: any): void;
         setPaused(paused: boolean): void;
@@ -19,14 +31,40 @@ declare namespace SmartStateMachine {
         private _nowAction;
         private _actionList;
         private _forceActionList;
+        private _clear;
+        private _frameLoop;
+        private _delta;
+        constructor(frameLoop: Function, clear: Function, delta: Function);
         createAction(name: string): MachineAction;
         addForceAction(action: MachineAction): void;
         setAction(nowAction: MachineAction): void;
         getAction(): MachineAction;
+        getSpecifiedAction(name: string): MachineAction;
         setPaused(paused: boolean): void;
         trigger(triggerName: string, param?: any): void;
         enterForceAction(name: string): void;
         onDelete(): void;
+    }
+}
+declare namespace SmartStateMachine {
+    enum EventStatus {
+        NO_TRIGGER = 0,
+        TRIGGER_ED = 1
+    }
+    class BaseEvent {
+        private _status;
+        private _id;
+        private _startTime;
+        constructor(id: number, startTime: number);
+        getID(): number;
+        getStartTime(): number;
+        setStatus(status: EventStatus): void;
+        getStatus(): EventStatus;
+    }
+}
+declare namespace SmartStateMachine {
+    class AttackEvent extends BaseEvent {
+        constructor(id: number, startTime: number);
     }
 }
 declare namespace SmartStateMachine {
