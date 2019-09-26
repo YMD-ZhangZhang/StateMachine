@@ -7,7 +7,7 @@ namespace SmartStateMachine
     export class MachineAction
     {
         public funcOnEnter: Function;// 进入回调
-        public onAttackEvent: Function;
+        public onEvent: Function;
 
         private _saveParam: any;
 
@@ -67,8 +67,8 @@ namespace SmartStateMachine
                     {
                         e.setStatus(EventStatus.TRIGGER_ED);
                         //console.log(`[${this._name}]触发了事件[${e.getID()}] 时间[${e.getStartTime()}]`);
-                        if (this.onAttackEvent)
-                            this.onAttackEvent(e, this._saveParam);
+                        if (this.onEvent)
+                            this.onEvent(e, this._saveParam);
                     }
                 }
             });
@@ -102,6 +102,8 @@ namespace SmartStateMachine
             // 激活当前Action的所有Transition
             this._transitionList.forEach(x => x.onEnable());
 
+            this._runningTime = 0;
+
             // 重置所有事件状态
             this.resetAllEventStatus();
 
@@ -121,6 +123,17 @@ namespace SmartStateMachine
          */
         public exit()
         {
+            // 发送所有未处理的事件
+            this._eventList.forEach(e =>
+            {
+                if (e.getStatus() == EventStatus.NO_TRIGGER)
+                {
+                    e.setStatus(EventStatus.TRIGGER_ED);
+                    if (this.onEvent)
+                        this.onEvent(e, this._saveParam);
+                }
+            });
+
             // 冻结当前Action的所有Transition
             this._transitionList.forEach(x => x.onDisable());
 

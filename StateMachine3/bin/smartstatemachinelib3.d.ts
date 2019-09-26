@@ -1,7 +1,7 @@
 declare namespace SmartStateMachine {
     class MachineAction {
         funcOnEnter: Function;
-        onAttackEvent: Function;
+        onEvent: Function;
         private _saveParam;
         private _name;
         private _stateMachine;
@@ -64,6 +64,16 @@ declare namespace SmartStateMachine {
 }
 declare namespace SmartStateMachine {
     class AttackEvent extends BaseEvent {
+        constructor(id: number, startTime: number);
+    }
+}
+declare namespace SmartStateMachine {
+    class EffectEvent extends BaseEvent {
+        constructor(id: number, startTime: number);
+    }
+}
+declare namespace SmartStateMachine {
+    class MoveEvent extends BaseEvent {
         constructor(id: number, startTime: number);
     }
 }

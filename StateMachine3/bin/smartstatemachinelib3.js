@@ -40,8 +40,8 @@ var SmartStateMachine;
                 if (e.getStatus() == SmartStateMachine.EventStatus.NO_TRIGGER) {
                     if (e.getStartTime() <= _this._runningTime) {
                         e.setStatus(SmartStateMachine.EventStatus.TRIGGER_ED);
-                        if (_this.onAttackEvent)
-                            _this.onAttackEvent(e, _this._saveParam);
+                        if (_this.onEvent)
+                            _this.onEvent(e, _this._saveParam);
                     }
                 }
             });
@@ -58,6 +58,7 @@ var SmartStateMachine;
             if (this.funcOnEnter)
                 this.funcOnEnter(this._saveParam);
             this._transitionList.forEach(function (x) { return x.onEnable(); });
+            this._runningTime = 0;
             this.resetAllEventStatus();
             this._canUpdate = true;
         };
@@ -65,6 +66,14 @@ var SmartStateMachine;
             this._eventList.forEach(function (x) { return x.setStatus(SmartStateMachine.EventStatus.NO_TRIGGER); });
         };
         MachineAction.prototype.exit = function () {
+            var _this = this;
+            this._eventList.forEach(function (e) {
+                if (e.getStatus() == SmartStateMachine.EventStatus.NO_TRIGGER) {
+                    e.setStatus(SmartStateMachine.EventStatus.TRIGGER_ED);
+                    if (_this.onEvent)
+                        _this.onEvent(e, _this._saveParam);
+                }
+            });
             this._transitionList.forEach(function (x) { return x.onDisable(); });
             this._canUpdate = false;
         };
@@ -184,6 +193,28 @@ var SmartStateMachine;
         return AttackEvent;
     }(SmartStateMachine.BaseEvent));
     SmartStateMachine.AttackEvent = AttackEvent;
+})(SmartStateMachine || (SmartStateMachine = {}));
+var SmartStateMachine;
+(function (SmartStateMachine) {
+    var EffectEvent = (function (_super) {
+        __extends(EffectEvent, _super);
+        function EffectEvent(id, startTime) {
+            return _super.call(this, id, startTime) || this;
+        }
+        return EffectEvent;
+    }(SmartStateMachine.BaseEvent));
+    SmartStateMachine.EffectEvent = EffectEvent;
+})(SmartStateMachine || (SmartStateMachine = {}));
+var SmartStateMachine;
+(function (SmartStateMachine) {
+    var MoveEvent = (function (_super) {
+        __extends(MoveEvent, _super);
+        function MoveEvent(id, startTime) {
+            return _super.call(this, id, startTime) || this;
+        }
+        return MoveEvent;
+    }(SmartStateMachine.BaseEvent));
+    SmartStateMachine.MoveEvent = MoveEvent;
 })(SmartStateMachine || (SmartStateMachine = {}));
 var SmartStateMachine;
 (function (SmartStateMachine) {
