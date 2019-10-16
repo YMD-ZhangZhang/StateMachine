@@ -78,6 +78,11 @@ declare namespace SmartStateMachine {
     }
 }
 declare namespace SmartStateMachine {
+    class SoundEvent extends BaseEvent {
+        constructor(id: number, startTime: number);
+    }
+}
+declare namespace SmartStateMachine {
     abstract class MachineActionTransition {
         private _fromAction;
         private _toAction;

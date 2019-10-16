@@ -16,6 +16,7 @@
         "src/Event/AttackEvent.ts",
         "src/Event/EffectEvent.ts",
         "src/Event/MoveEvent.ts",
+        "src/Event/SoundEvent.ts",
 		"src/Transition/MachineActionTransition.ts",
 		"src/Transition/TransitionDelay.ts",
 		"src/Transition/TransitionTrigger.ts"

@@ -218,6 +218,17 @@ var SmartStateMachine;
 })(SmartStateMachine || (SmartStateMachine = {}));
 var SmartStateMachine;
 (function (SmartStateMachine) {
+    var SoundEvent = (function (_super) {
+        __extends(SoundEvent, _super);
+        function SoundEvent(id, startTime) {
+            return _super.call(this, id, startTime) || this;
+        }
+        return SoundEvent;
+    }(SmartStateMachine.BaseEvent));
+    SmartStateMachine.SoundEvent = SoundEvent;
+})(SmartStateMachine || (SmartStateMachine = {}));
+var SmartStateMachine;
+(function (SmartStateMachine) {
     var MachineActionTransition = (function () {
         function MachineActionTransition(fromAction, toAction) {
             this._paused = false;
