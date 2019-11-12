@@ -86,7 +86,10 @@ var SmartStateMachine;
         };
         MachineAction.prototype.onDelete = function () {
             if (this._transitionList) {
-                this._transitionList.forEach(function (x) { return x.onDelete(); });
+                for (var i = 0; i < this._transitionList.length; i++) {
+                    var x = this._transitionList[i];
+                    x.onDelete();
+                }
                 this._transitionList = null;
             }
             this._clear(this, this.onUpdate);

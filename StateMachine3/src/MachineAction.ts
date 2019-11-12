@@ -162,7 +162,12 @@ namespace SmartStateMachine
         {
             if (this._transitionList)
             {
-                this._transitionList.forEach(x => x.onDelete());
+                for (let i = 0; i < this._transitionList.length; i++)
+                {
+                    let x = this._transitionList[i];
+                    x.onDelete();
+                }
+
                 this._transitionList = null;
             }
             
