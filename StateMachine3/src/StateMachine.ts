@@ -13,17 +13,21 @@ namespace SmartStateMachine
         private _clear: Function;
         private _frameLoop: Function;
         private _delta: Function;
+        private _resetDelta: Function;
+        private _getSpeedMode: Function;
 
-        constructor(frameLoop: Function, clear: Function, delta: Function)
+        constructor(frameLoop: Function, clear: Function, delta: Function, resetDelta: Function, getSpeedMode: Function)
         {
             this._frameLoop = frameLoop;
             this._clear = clear;
             this._delta = delta;
+            this._resetDelta = resetDelta;
+            this._getSpeedMode = getSpeedMode;
         }
 
         public createAction(name: string) : MachineAction
         {
-            let action = new MachineAction(name, this, this._frameLoop, this._clear, this._delta);
+            let action = new MachineAction(name, this, this._frameLoop, this._clear, this._delta, this._resetDelta, this._getSpeedMode);
             this._actionList.push(action);
             return action;
         }

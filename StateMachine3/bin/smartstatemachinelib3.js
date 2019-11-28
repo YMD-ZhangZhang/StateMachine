@@ -14,7 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 var SmartStateMachine;
 (function (SmartStateMachine) {
     var MachineAction = (function () {
-        function MachineAction(name, stateMachine, frameLoop, clear, delta) {
+        function MachineAction(name, stateMachine, frameLoop, clear, delta, resetDelta, getSpeedMode) {
             this._runningTime = 0;
             this._name = name;
             this._stateMachine = stateMachine;
@@ -23,6 +23,8 @@ var SmartStateMachine;
             this._frameLoop = frameLoop;
             this._clear = clear;
             this._delta = delta;
+            this._resetDelta = resetDelta;
+            this._getSpeedMode = getSpeedMode;
             this._frameLoop(1, this, this.onUpdate);
         }
         MachineAction.prototype.addEvent = function (e) {
@@ -31,7 +33,10 @@ var SmartStateMachine;
         MachineAction.prototype.onUpdate = function () {
             if (!this._canUpdate)
                 return;
-            this._runningTime += this._delta();
+            if (this._getSpeedMode() == 1)
+                this._runningTime += this._delta();
+            if (this._getSpeedMode() == 2)
+                this._runningTime += this._resetDelta();
             this.tryTriggerEvent();
         };
         MachineAction.prototype.tryTriggerEvent = function () {
@@ -103,15 +108,17 @@ var SmartStateMachine;
 var SmartStateMachine;
 (function (SmartStateMachine) {
     var StateMachine = (function () {
-        function StateMachine(frameLoop, clear, delta) {
+        function StateMachine(frameLoop, clear, delta, resetDelta, getSpeedMode) {
             this._actionList = new Array();
             this._forceActionList = new Array();
             this._frameLoop = frameLoop;
             this._clear = clear;
             this._delta = delta;
+            this._resetDelta = resetDelta;
+            this._getSpeedMode = getSpeedMode;
         }
         StateMachine.prototype.createAction = function (name) {
-            var action = new SmartStateMachine.MachineAction(name, this, this._frameLoop, this._clear, this._delta);
+            var action = new SmartStateMachine.MachineAction(name, this, this._frameLoop, this._clear, this._delta, this._resetDelta, this._getSpeedMode);
             this._actionList.push(action);
             return action;
         };
@@ -258,11 +265,13 @@ var SmartStateMachine;
 (function (SmartStateMachine) {
     var TransitionDelay = (function (_super) {
         __extends(TransitionDelay, _super);
-        function TransitionDelay(fromAction, toAction, frameLoop, clear, delta) {
+        function TransitionDelay(fromAction, toAction, frameLoop, clear, delta, resetDelta, getSpeedMode) {
             var _this = _super.call(this, fromAction, toAction) || this;
             _this._frameLoop = frameLoop;
             _this._clear = clear;
             _this._delta = delta;
+            _this._resetDelta = resetDelta;
+            _this._getSpeedMode = getSpeedMode;
             _this._canUpdate = false;
             _this._frameLoop(1, _this, _this.onUpdate);
             return _this;
@@ -280,7 +289,10 @@ var SmartStateMachine;
         TransitionDelay.prototype.onUpdate = function () {
             if (this._paused || !this._canUpdate)
                 return;
-            this._nowDelayTime += this._delta();
+            if (this._getSpeedMode() == 1)
+                this._nowDelayTime += this._delta();
+            if (this._getSpeedMode() == 2)
+                this._nowDelayTime += this._resetDelta();
             if (this._nowDelayTime >= this._delayTime) {
                 this.onDelayOver();
             }
@@ -300,7 +312,7 @@ var SmartStateMachine;
 (function (SmartStateMachine) {
     var TransitionTrigger = (function (_super) {
         __extends(TransitionTrigger, _super);
-        function TransitionTrigger(fromAction, toAction, frameLoop, clear, delta) {
+        function TransitionTrigger(fromAction, toAction, frameLoop, clear, delta, resetDelta, getSpeedMode) {
             var _this = _super.call(this, fromAction, toAction) || this;
             _this._triggerProtectTime = 0;
             _this._triggerEndTime = 0;
@@ -309,6 +321,8 @@ var SmartStateMachine;
             _this._frameLoop = frameLoop;
             _this._clear = clear;
             _this._delta = delta;
+            _this._resetDelta = resetDelta;
+            _this._getSpeedMode = getSpeedMode;
             _this._canUpdate = false;
             _this._frameLoop(1, _this, _this.onUpdate);
             return _this;
@@ -344,13 +358,19 @@ var SmartStateMachine;
             if (this._paused || !this._canUpdate)
                 return;
             if (this._nowTriggerProtectTime > 0) {
-                this._nowTriggerProtectTime -= this._delta();
+                if (this._getSpeedMode() == 1)
+                    this._nowTriggerProtectTime -= this._delta();
+                if (this._getSpeedMode() == 2)
+                    this._nowTriggerProtectTime -= this._resetDelta();
                 if (this._nowTriggerProtectTime <= 0) {
                     this.onTriggerProtectTimeOver();
                 }
             }
             if (this._nowTriggerEndTime > 0) {
-                this._nowTriggerEndTime -= this._delta();
+                if (this._getSpeedMode() == 1)
+                    this._nowTriggerEndTime -= this._delta();
+                if (this._getSpeedMode() == 2)
+                    this._nowTriggerEndTime -= this._resetDelta();
                 if (this._nowTriggerEndTime <= 0) {
                     this.onTriggerEndTimerOver();
                 }

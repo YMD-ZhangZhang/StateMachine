@@ -18,14 +18,18 @@ namespace SmartStateMachine
         private _clear: Function;
         private _frameLoop: Function;
         private _delta: Function;
+        private _resetDelta: Function;
+        private _getSpeedMode: Function;
 
-        constructor(fromAction, toAction, frameLoop: Function, clear: Function, delta: Function)
+        constructor(fromAction, toAction, frameLoop: Function, clear: Function, delta: Function, resetDelta: Function, getSpeedMode: Function)
         {
             super(fromAction, toAction);
 
             this._frameLoop = frameLoop;
             this._clear = clear;
             this._delta = delta;
+            this._resetDelta = resetDelta;
+            this._getSpeedMode = getSpeedMode;
 
             this._canUpdate = false;
             this._frameLoop(1, this, this.onUpdate);
@@ -98,7 +102,11 @@ namespace SmartStateMachine
             // 减少ProtectTime
             if (this._nowTriggerProtectTime > 0)
             {
-                this._nowTriggerProtectTime -= this._delta();
+                if (this._getSpeedMode() == 1)
+                    this._nowTriggerProtectTime -= this._delta();
+                if (this._getSpeedMode() == 2)
+                    this._nowTriggerProtectTime -= this._resetDelta();
+
                 if (this._nowTriggerProtectTime <= 0)
                 {
                     this.onTriggerProtectTimeOver();
@@ -108,7 +116,11 @@ namespace SmartStateMachine
             // 减少EndTime
             if (this._nowTriggerEndTime > 0)
             {
-                this._nowTriggerEndTime -= this._delta();
+                if (this._getSpeedMode() == 1)
+                    this._nowTriggerEndTime -= this._delta();
+                if (this._getSpeedMode() == 2)
+                    this._nowTriggerEndTime -= this._resetDelta();
+
                 if (this._nowTriggerEndTime <= 0)
                 {
                     this.onTriggerEndTimerOver();

@@ -21,10 +21,12 @@ namespace SmartStateMachine
         private _clear: Function;
         private _frameLoop: Function;
         private _delta: Function;
+        private _resetDelta: Function;
+        public _getSpeedMode: Function;
 
         private _runningTime: number = 0;// 本次运行时间
 
-        constructor(name: string, stateMachine: StateMachine, frameLoop: Function, clear: Function, delta: Function)
+        constructor(name: string, stateMachine: StateMachine, frameLoop: Function, clear: Function, delta: Function, resetDelta: Function, getSpeedMode: Function)
         {
             this._name = name;
             this._stateMachine = stateMachine;
@@ -34,6 +36,8 @@ namespace SmartStateMachine
             this._frameLoop = frameLoop;
             this._clear = clear;
             this._delta = delta;
+            this._resetDelta = resetDelta;
+            this._getSpeedMode = getSpeedMode;
 
             this._frameLoop(1, this, this.onUpdate);
         }
@@ -53,7 +57,10 @@ namespace SmartStateMachine
             if (!this._canUpdate)
                 return;
 
-            this._runningTime += this._delta();
+            if (this._getSpeedMode() == 1)
+                this._runningTime += this._delta();
+            if (this._getSpeedMode() == 2)
+                this._runningTime += this._resetDelta();
             this.tryTriggerEvent();
         }
 

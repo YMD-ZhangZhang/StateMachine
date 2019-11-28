@@ -11,8 +11,10 @@ declare namespace SmartStateMachine {
         private _clear;
         private _frameLoop;
         private _delta;
+        private _resetDelta;
+        _getSpeedMode: Function;
         private _runningTime;
-        constructor(name: string, stateMachine: StateMachine, frameLoop: Function, clear: Function, delta: Function);
+        constructor(name: string, stateMachine: StateMachine, frameLoop: Function, clear: Function, delta: Function, resetDelta: Function, getSpeedMode: Function);
         addEvent(e: BaseEvent): void;
         private onUpdate;
         private tryTriggerEvent;
@@ -34,7 +36,9 @@ declare namespace SmartStateMachine {
         private _clear;
         private _frameLoop;
         private _delta;
-        constructor(frameLoop: Function, clear: Function, delta: Function);
+        private _resetDelta;
+        private _getSpeedMode;
+        constructor(frameLoop: Function, clear: Function, delta: Function, resetDelta: Function, getSpeedMode: Function);
         createAction(name: string): MachineAction;
         addForceAction(action: MachineAction): void;
         setAction(nowAction: MachineAction): void;
@@ -104,7 +108,9 @@ declare namespace SmartStateMachine {
         private _frameLoop;
         private _clear;
         private _delta;
-        constructor(fromAction: any, toAction: any, frameLoop: Function, clear: Function, delta: Function);
+        private _resetDelta;
+        private _getSpeedMode;
+        constructor(fromAction: any, toAction: any, frameLoop: Function, clear: Function, delta: Function, resetDelta: Function, getSpeedMode: Function);
         setDelayTime(delayTime: number): void;
         onEnable(): void;
         onDisable(): void;
@@ -125,7 +131,9 @@ declare namespace SmartStateMachine {
         private _clear;
         private _frameLoop;
         private _delta;
-        constructor(fromAction: any, toAction: any, frameLoop: Function, clear: Function, delta: Function);
+        private _resetDelta;
+        private _getSpeedMode;
+        constructor(fromAction: any, toAction: any, frameLoop: Function, clear: Function, delta: Function, resetDelta: Function, getSpeedMode: Function);
         setTriggerFlag(triggerFlag: string): void;
         setTriggerProtectTime(time: number): TransitionTrigger;
         setTriggerEndTime(time: number): TransitionTrigger;
